@@ -4,7 +4,52 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>website-portofolio-new</title>
+
+    <!-- SEO Meta -->
+    <title>Guntur Listyo Prabowo — Frontend Developer & UI/UX Designer</title>
+    <meta name="description" content="Portfolio of Guntur Listyo Prabowo — Frontend Developer and UI/UX Designer focused on building thoughtful digital experiences with intuitive interfaces and polished web applications." />
+    <meta name="keywords" content="Frontend Developer, UI/UX Designer, React, Web Development, Portfolio, Guntur Listyo Prabowo" />
+    <meta name="author" content="Guntur Listyo Prabowo" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Guntur Listyo Prabowo — Frontend Developer & UI/UX Designer" />
+    <meta property="og:description" content="Frontend Developer and UI/UX Designer focused on creating intuitive interfaces and polished web experiences." />
+    <meta property="og:url" content="https://gunturlistyo.vercel.app" />
+    <meta property="og:image" content="/og-image.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Guntur Listyo Prabowo — Frontend Developer & UI/UX Designer" />
+    <meta name="twitter:description" content="Frontend Developer and UI/UX Designer focused on creating intuitive interfaces and polished web experiences." />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Guntur Listyo Prabowo",
+      "jobTitle": "Frontend Developer & UI/UX Designer",
+      "url": "https://gunturlistyo.vercel.app",
+      "sameAs": [
+        "https://github.com/gunturlistyo",
+        "https://linkedin.com/in/gunturlistyo"
+      ]
+    }
+    </script>
+
+    <!-- Theme Script: prevent flash on load -->
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = stored || (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch(e) {}
+      })();
+    </script>
+
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>

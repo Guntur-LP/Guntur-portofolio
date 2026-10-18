@@ -1,12 +1,254 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Plus+Jakarta+Sans+Mono:wght@400;600&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-plus-jakarta-sans: "Plus Jakarta Sans", sans-serif;
-}
+/* =============================================
+   DESIGN TOKENS — CSS Variables
+   ============================================= */
 
 :root {
-  background-color: #060b12;
-  color: white;
-  font-family: var(--font-plus-jakarta-sans);
+  /* Surface */
+  --color-surface-base: #faf9f7;
+  --color-surface-muted: #f0eeeb;
+  --color-surface-raised: #ffffff;
+
+  /* Text */
+  --color-text-primary: #16120f;
+  --color-text-secondary: #5c5750;
+  --color-text-disabled: #8a857e;
+  --color-text-inverse: #faf9f7;
+
+  /* Border */
+  --color-border-default: rgba(22, 18, 15, 0.12);
+  --color-border-strong: rgba(22, 18, 15, 0.55);
+
+  /* Focus */
+  --color-focus-ring: #16120f;
+
+  /* Action Primary */
+  --color-action-primary-bg: #16120f;
+  --color-action-primary-bg-hover: #2f2a26;
+  --color-action-primary-bg-active: #45403b;
+  --color-action-primary-fg: #faf9f7;
+
+  /* Status */
+  --color-status-error: #b42318;
+  --color-status-success: #067647;
+
+  /* Overlay */
+  --color-overlay: rgba(22, 18, 15, 0.50);
+
+  /* Typography */
+  --font-primary: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-accent: "Plus Jakarta Sans", ui-monospace, monospace;
+  --font-weight-base: 400;
+  --font-weight-strong: 600;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 64px;
+  --space-7: 80px;
+  --space-8: 96px;
+  --space-9: 24px;
+  --space-10: 32px;
+  --space-11: 48px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.40);
+
+  /* Z-index */
+  --z-nav: 40;
+  --z-modal: 50;
+  --z-skip: 100;
+
+  /* Motion */
+  --motion-instant: 150ms;
+  --motion-base: 250ms;
+  --motion-slow: 400ms;
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Layout */
+  --container-max: 1120px;
+}
+
+/* Dark theme — follows system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface-base: #000000;
+    --color-surface-muted: #16120f;
+    --color-surface-raised: #0a0a0a;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a8a49e;
+    --color-text-disabled: #6b6863;
+    --color-text-inverse: #cecdc9;
+    --color-border-default: rgba(255, 255, 255, 0.10);
+    --color-border-strong: rgba(255, 255, 255, 0.45);
+    --color-focus-ring: #ffffff;
+    --color-action-primary-bg: #ffffff;
+    --color-action-primary-bg-hover: #e6e4e0;
+    --color-action-primary-bg-active: #cecdc9;
+    --color-action-primary-fg: #000000;
+    --color-status-error: #ff8a80;
+    --color-status-success: #7ee2a8;
+    --color-overlay: rgba(0, 0, 0, 0.60);
+  }
+}
+
+/* Dark theme — explicit user choice */
+:root[data-theme="dark"] {
+  --color-surface-base: #000000;
+  --color-surface-muted: #16120f;
+  --color-surface-raised: #0a0a0a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a8a49e;
+  --color-text-disabled: #6b6863;
+  --color-text-inverse: #cecdc9;
+  --color-border-default: rgba(255, 255, 255, 0.10);
+  --color-border-strong: rgba(255, 255, 255, 0.45);
+  --color-focus-ring: #ffffff;
+  --color-action-primary-bg: #ffffff;
+  --color-action-primary-bg-hover: #e6e4e0;
+  --color-action-primary-bg-active: #cecdc9;
+  --color-action-primary-fg: #000000;
+  --color-status-error: #ff8a80;
+  --color-status-success: #7ee2a8;
+  --color-overlay: rgba(0, 0, 0, 0.60);
+}
+
+/* =============================================
+   BASE STYLES
+   ============================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: var(--font-weight-base);
+  transition: background-color var(--motion-instant) var(--motion-easing),
+              color var(--motion-instant) var(--motion-easing);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =============================================
+   FOCUS STYLES
+   ============================================= */
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* =============================================
+   SKIP LINK
+   ============================================= */
+
+.skip-link {
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-skip);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-action-primary-bg);
+  color: var(--color-action-primary-fg);
+  font-weight: var(--font-weight-strong);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--motion-instant) var(--motion-easing);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* =============================================
+   LAYOUT UTILITIES
+   ============================================= */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: var(--space-6);
+  }
+}
+
+/* Section scroll margin for sticky navbar */
+section[id] {
+  scroll-margin-top: 72px;
+}
+
+/* =============================================
+   TYPOGRAPHY UTILITIES
+   ============================================= */
+
+.font-accent {
+  font-family: var(--font-accent);
+  letter-spacing: 0.05em;
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+/* =============================================
+   SCROLL REVEAL ANIMATION
+   ============================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--motion-slow) var(--motion-easing),
+              transform var(--motion-slow) var(--motion-easing);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
