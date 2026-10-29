@@ -158,6 +158,20 @@ function ProjectModal({ project, onClose }) {
   }, [onClose]);
 
   const modalTitleId = `modal-title-${project.id}`;
+  const links =
+    typeof project.links === "object" && project.links !== null
+      ? project.links
+      : typeof project.links === "string"
+      ? {
+          github: project.links.includes("github.com") ? project.links : null,
+          figma: project.links.includes("figma.com") ? project.links : null,
+          demo:
+            !project.links.includes("github.com") &&
+            !project.links.includes("figma.com")
+              ? project.links
+              : null,
+        }
+      : {};
 
   return (
     <div
@@ -261,19 +275,33 @@ function ProjectModal({ project, onClose }) {
         <div style={{ padding: "var(--space-9)" }}>
           {/* Project image */}
           {project.image ? (
-            <img
-              src={project.image}
-              alt={`Screenshot of ${project.title}`}
-              loading="lazy"
+            <div
               style={{
                 width: "100%",
-                aspectRatio: "16/10",
-                objectFit: "cover",
                 borderRadius: "var(--radius-md)",
+                overflow: "hidden",
+                border: "1px solid var(--color-border-default)",
                 marginBottom: "var(--space-9)",
-                display: "block",
+                backgroundColor: "var(--color-surface-muted)",
               }}
-            />
+            >
+              <img
+                src={project.image}
+                alt={`Screenshot of ${project.title}`}
+                loading="lazy"
+                style={{
+                  width: "100%",
+                  aspectRatio: "16/10",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+                onError={(e) => {
+                  if (!e.currentTarget.src.includes("Project1.jpg")) {
+                    e.currentTarget.src = "/images/projects/Project1.jpg";
+                  }
+                }}
+              />
+            </div>
           ) : (
             <div style={{ marginBottom: "var(--space-9)" }}>
               <ProjectImagePlaceholder title={project.title} />
@@ -358,7 +386,7 @@ function ProjectModal({ project, onClose }) {
           </section>
 
           {/* Links — only render available ones */}
-          {(project.links.github || project.links.demo || project.links.figma) && (
+          {(links.github || links.demo || links.figma) && (
             <div
               style={{
                 display: "flex",
@@ -368,9 +396,9 @@ function ProjectModal({ project, onClose }) {
                 borderTop: "1px solid var(--color-border-default)",
               }}
             >
-              {project.links.github && (
+              {links.github && (
                 <a
-                  href={project.links.github}
+                  href={links.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -394,9 +422,9 @@ function ProjectModal({ project, onClose }) {
                   <span className="sr-only"> — {project.title} (opens in new tab)</span>
                 </a>
               )}
-              {project.links.demo && (
+              {links.demo && (
                 <a
-                  href={project.links.demo}
+                  href={links.demo}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -420,9 +448,9 @@ function ProjectModal({ project, onClose }) {
                   <span className="sr-only"> — {project.title} (opens in new tab)</span>
                 </a>
               )}
-              {project.links.figma && (
+              {links.figma && (
                 <a
-                  href={project.links.figma}
+                  href={links.figma}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -506,23 +534,40 @@ function ProjectCard({ project, onOpen, index }) {
         flexDirection: "column",
         transition: `border-color var(--motion-instant) var(--motion-easing), background-color var(--motion-instant) var(--motion-easing)`,
         position: "relative",
+        animationDelay: `${index * 100}ms`,
       }}
     >
       {/* Image */}
       <div style={{ flexShrink: 0, padding: "var(--space-5) var(--space-5) 0" }}>
         {project.image ? (
-          <img
-            src={project.image}
-            alt={`Screenshot of ${project.title}`}
-            loading="lazy"
+          <div
             style={{
               width: "100%",
-              aspectRatio: "16/10",
-              objectFit: "cover",
               borderRadius: "var(--radius-md)",
-              display: "block",
+              overflow: "hidden",
+              border: "1px solid var(--color-border-default)",
+              backgroundColor: "var(--color-surface-muted)",
             }}
-          />
+          >
+            <img
+              src={project.image}
+              alt={`Screenshot of ${project.title}`}
+              loading="lazy"
+              style={{
+                width: "100%",
+                aspectRatio: "16/10",
+                objectFit: "cover",
+                display: "block",
+                transition: "transform var(--motion-base) var(--motion-easing)",
+              }}
+              className="project-card-img"
+              onError={(e) => {
+                if (!e.currentTarget.src.includes("Project1.jpg")) {
+                  e.currentTarget.src = "/images/projects/Project1.jpg";
+                }
+              }}
+            />
+          </div>
         ) : (
           <ProjectImagePlaceholder title={project.title} />
         )}
@@ -538,8 +583,6 @@ function ProjectCard({ project, onOpen, index }) {
           flex: 1,
         }}
       >
-        <CategoryChip category={project.category} />
-
         <h3
           style={{
             fontSize: "18px",
@@ -635,15 +678,19 @@ function ProjectCard({ project, onOpen, index }) {
       {/* Pseudo clickable area for whole card */}
       <style>{`
         .project-card:hover {
-          border-color: var(--color-border-strong) !important;
-          background-color: var(--color-surface-muted) !important;
+          border-color: var(--color-accent-start) !important;
+          box-shadow: var(--shadow-card) !important;
+        }
+        .project-card:hover .project-card-img {
+          transform: scale(1.04);
         }
         .view-details-btn:hover {
           background-color: var(--color-surface-muted) !important;
+          border-color: var(--color-accent-start) !important;
         }
         .view-details-btn:active {
           background-color: var(--color-surface-muted) !important;
-          border-color: var(--color-text-primary) !important;
+          border-color: var(--color-accent-end) !important;
         }
       `}</style>
     </article>

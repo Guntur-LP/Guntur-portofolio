@@ -1,7 +1,6 @@
 // src/components/Navbar.jsx
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../hooks/useTheme";
-import { profile } from "../data/profile";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -192,31 +191,10 @@ export default function Navbar() {
             }}
             className="brand-link"
           >
-            {/* Monogram */}
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "36px",
-                height: "36px",
-                borderRadius: "var(--radius-full)",
-                border: "1.5px solid var(--color-border-strong)",
-                fontSize: "11px",
-                fontWeight: "var(--font-weight-strong)",
-                fontFamily: "var(--font-accent)",
-                letterSpacing: "0.05em",
-                color: "var(--color-text-primary)",
-                flexShrink: 0,
-              }}
-              aria-hidden="true"
-            >
-              GLP
-            </span>
             {/* Name — hidden below md */}
             <span
               style={{
-                fontSize: "14px",
+                fontSize: "18px",
                 fontWeight: "var(--font-weight-strong)",
                 color: "var(--color-text-primary)",
                 lineHeight: 1,

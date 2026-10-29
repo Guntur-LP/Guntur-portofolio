@@ -25,29 +25,9 @@ export default function Footer() {
       >
         {/* Brand */}
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px",
-              height: "28px",
-              borderRadius: "var(--radius-full)",
-              border: "1.5px solid var(--color-border-strong)",
-              fontSize: "9px",
-              fontWeight: "var(--font-weight-strong)",
-              fontFamily: "var(--font-accent)",
-              letterSpacing: "0.05em",
-              color: "var(--color-text-primary)",
-              flexShrink: 0,
-            }}
-            aria-hidden="true"
-          >
-            GLP
-          </span>
           <p
             style={{
-              fontSize: "13px",
+              fontSize: "14px",
               color: "var(--color-text-secondary)",
               margin: 0,
             }}

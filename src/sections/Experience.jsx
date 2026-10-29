@@ -9,7 +9,7 @@ function ExperienceCard({ experience, index }) {
   return (
     <article
       ref={ref}
-      className="reveal"
+      className="reveal experience-card"
       style={{
         display: "grid",
         gridTemplateColumns: "1fr",
@@ -21,7 +21,6 @@ function ExperienceCard({ experience, index }) {
         transition: `border-color var(--motion-instant) var(--motion-easing)`,
         animationDelay: `${index * 100}ms`,
       }}
-      className="experience-card reveal"
     >
       {/* Header */}
       <div
@@ -73,19 +72,6 @@ function ExperienceCard({ experience, index }) {
           {experience.period}
         </span>
       </div>
-
-      {/* Description */}
-      <p
-        style={{
-          fontSize: "15px",
-          lineHeight: "24px",
-          color: "var(--color-text-secondary)",
-          margin: 0,
-          maxWidth: "65ch",
-        }}
-      >
-        {experience.description}
-      </p>
 
       {/* Contributions */}
       {experience.contributions && experience.contributions.length > 0 && (
@@ -166,7 +152,8 @@ export default function Experience() {
 
       <style>{`
         .experience-card:hover {
-          border-color: var(--color-border-strong) !important;
+          border-color: var(--color-accent-start) !important;
+          box-shadow: var(--shadow-card) !important;
         }
       `}</style>
     </section>

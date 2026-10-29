@@ -1,332 +1,411 @@
-// src/sections/Hero.jsx
-import { useScrollReveal } from "../hooks/useScrollReveal";
+import { useState, useEffect, useRef } from "react";
 import { profile } from "../data/profile";
 
-// Arrow icon for CTA
+const ROLES = ["DEVELOPER", "DESIGNER"];
+const LINE_1 = "GUNTUR".split("");
+const LINE_2 = "LISTYO".split("");
+
+// Hero assets
+const PORTRAIT_WEBP =
+  "../images/Hero/New.png";
+
+// CTA Arrow Icon
 function ArrowIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <line x1="5" y1="12" x2="19" y2="12" />
       <polyline points="12 5 19 12 12 19" />
     </svg>
   );
 }
 
-// Download icon
-function DownloadIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-  );
-}
-
-// Status dot (available for opportunities)
-function AvailableBadge() {
-  return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "var(--space-2)",
-        padding: "var(--space-2) var(--space-4)",
-        borderRadius: "var(--radius-full)",
-        border: "1px solid var(--color-border-default)",
-        backgroundColor: "var(--color-surface-muted)",
-        fontSize: "12px",
-        fontFamily: "var(--font-accent)",
-        color: "var(--color-text-secondary)",
-        letterSpacing: "0.05em",
-        userSelect: "none",
-      }}
-    >
-      <span
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "var(--radius-full)",
-          backgroundColor: "var(--color-status-success)",
-          display: "inline-block",
-          animation: "pulse-badge 2s ease-in-out infinite",
-        }}
-        aria-hidden="true"
-      />
-      Available for opportunities
-    </span>
-  );
-}
-
 export default function Hero() {
-  const headlineRef = useScrollReveal(0.1);
-  const subRef = useScrollReveal(0.1);
-  const ctaRef = useScrollReveal(0.1);
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [isReducedMotion, setIsReducedMotion] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
+  const turbulenceRef = useRef(null);
+  const displacementRef = useRef(null);
+  const animFrameRef = useRef(null);
+
+  // SVG Distortion Animation State
+  const animStateRef = useRef({
+    currentScale: 1,
+    currentFreq: 0.009,
+    startScale: 1,
+    startFreq: 0.009,
+    targetScale: 1,
+    targetFreq: 0.009,
+    startTime: 0,
+    duration: 520,
+    isAnimating: false,
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (e) => setIsReducedMotion(e.matches);
+    mediaQuery.addEventListener("change", handleChange);
+
+    // Auto trigger cinematic entrance animation on mount
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 150);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  // Liquid distortion spring interpolation (Desktop hover)
+  const animateDistortion = (toScale, toFreq) => {
+    const isDesktopPointer = window.matchMedia(
+      "(pointer: fine) and (min-width: 769px)"
+    ).matches;
+    if (!isDesktopPointer || isReducedMotion) return;
+
+    const s = animStateRef.current;
+    s.startScale = s.currentScale;
+    s.startFreq = s.currentFreq;
+    s.targetScale = toScale;
+    s.targetFreq = toFreq;
+    s.startTime = performance.now();
+    s.duration = 520;
+
+    if (!s.isAnimating) {
+      s.isAnimating = true;
+
+      const step = (time) => {
+        const elapsed = time - s.startTime;
+        const progress = Math.min(1, elapsed / s.duration);
+
+        // Fluid spring dampening curve
+        const eased =
+          progress >= 1
+            ? 1
+            : 1 - Math.exp(-6 * progress) * Math.cos(4 * progress);
+
+        s.currentScale =
+          s.startScale + (s.targetScale - s.startScale) * eased;
+        s.currentFreq =
+          s.startFreq + (s.targetFreq - s.startFreq) * eased;
+
+        if (displacementRef.current) {
+          displacementRef.current.setAttribute(
+            "scale",
+            s.currentScale.toFixed(2)
+          );
+        }
+        if (turbulenceRef.current) {
+          turbulenceRef.current.setAttribute(
+            "baseFrequency",
+            s.currentFreq.toFixed(5)
+          );
+        }
+
+        if (progress < 1) {
+          animFrameRef.current = requestAnimationFrame(step);
+        } else {
+          s.isAnimating = false;
+          s.currentScale = s.targetScale;
+          s.currentFreq = s.targetFreq;
+          if (displacementRef.current) {
+            displacementRef.current.setAttribute("scale", s.targetScale.toString());
+          }
+          if (turbulenceRef.current) {
+            turbulenceRef.current.setAttribute(
+              "baseFrequency",
+              s.targetFreq.toString()
+            );
+          }
+        }
+      };
+
+      animFrameRef.current = requestAnimationFrame(step);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    animateDistortion(30, 0.022);
+  };
+
+  const handleMouseLeave = () => {
+    animateDistortion(1, 0.009);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section
-      id="top"
-      aria-labelledby="hero-heading"
+      id="hero"
+      aria-label="Introduction"
+      className="relative flex flex-col min-h-[100svh] w-full overflow-hidden select-none"
       style={{
-        minHeight: "100dvh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        paddingTop: "72px", // navbar height
-        paddingBottom: "var(--space-8)",
-        position: "relative",
-        overflow: "hidden",
+        backgroundColor: "var(--color-surface-base)",
       }}
     >
-      {/* Background grid pattern */}
-      <div
+      {/* SVG Liquid Distortion Filter Definition */}
+      <svg
+        className="sr-only absolute pointer-events-none"
         aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(var(--color-border-default) 1px, transparent 1px),
-            linear-gradient(to right, var(--color-border-default) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)",
-          pointerEvents: "none",
-        }}
-      />
+        width="0"
+        height="0"
+      >
+        <defs>
+          <filter
+            id="portrait-distortion"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+            filterUnits="objectBoundingBox"
+          >
+            <feTurbulence
+              ref={turbulenceRef}
+              type="fractalNoise"
+              baseFrequency="0.009"
+              numOctaves="2"
+              result="noise"
+            />
+            <feDisplacementMap
+              ref={displacementRef}
+              in="SourceGraphic"
+              in2="noise"
+              scale="1"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
 
-      <div className="container" style={{ position: "relative", zIndex: 1 }}>
-        {/* Available badge */}
-        <div
-          ref={useScrollReveal(0.1)}
-          className="reveal"
-          style={{ marginBottom: "var(--space-9)" }}
-        >
-          {profile.available && <AvailableBadge />}
+      {/* Layer 1: Top Row (Role Labels + Availability & Intro Description) */}
+      <div className="md:relative z-20 w-full px-[var(--gutter)] pt-[clamp(6rem,12vh,8.5rem)] flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0">
+        {/* Left Column: Stacked Role Labels (Anton typography) */}
+        <div className="flex flex-col">
+          {ROLES.map((role, idx) => (
+            <div key={role} className="overflow-hidden">
+              <div
+                className="founder-role-text text-[1.75rem] sm:text-[3.25rem] transition-transform will-change-transform"
+                style={{
+                  transform:
+                    isRevealed || isReducedMotion
+                      ? "translateY(0)"
+                      : "translateY(110%)",
+                  transitionDuration: isReducedMotion ? "0ms" : "760ms",
+                  transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                  transitionDelay: isReducedMotion
+                    ? "0ms"
+                    : `${150 + idx * 80}ms`,
+                }}
+              >
+                {role}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Eyebrow */}
-        <p
-          style={{
-            fontFamily: "var(--font-accent)",
-            fontSize: "12px",
-            color: "var(--color-text-secondary)",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            marginBottom: "var(--space-5)",
-            marginTop: 0,
-          }}
-          className="reveal"
-          ref={useScrollReveal(0.1)}
-        >
-          01 — Introduction
-        </p>
-
-        {/* Main headline */}
-        <h1
-          id="hero-heading"
-          ref={headlineRef}
-          className="reveal"
-          style={{
-            fontSize: "clamp(2rem, 6vw, 3.5rem)",
-            fontWeight: 700,
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-            color: "var(--color-text-primary)",
-            maxWidth: "800px",
-            marginTop: 0,
-            marginBottom: "var(--space-5)",
-          }}
-        >
-          {profile.headline}
-        </h1>
-
-        {/* Subheadline */}
-        <p
-          ref={subRef}
-          className="reveal"
-          style={{
-            fontSize: "18px",
-            lineHeight: "28px",
-            color: "var(--color-text-secondary)",
-            maxWidth: "580px",
-            marginTop: 0,
-            marginBottom: "var(--space-8)",
-          }}
-        >
-          {profile.subheadline}
-        </p>
-
-        {/* CTA Buttons */}
-        <div
-          ref={ctaRef}
-          className="reveal"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "var(--space-4)",
-            alignItems: "center",
-          }}
-        >
-          {/* Primary CTA */}
-          <a
-            href="#projects"
-            id="hero-cta-projects"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--space-3)",
-              padding: "0 var(--space-9)",
-              height: "44px",
-              borderRadius: "var(--radius-md)",
-              backgroundColor: "var(--color-action-primary-bg)",
-              color: "var(--color-action-primary-fg)",
-              fontSize: "16px",
-              fontWeight: "var(--font-weight-strong)",
-              textDecoration: "none",
-              border: "none",
-              cursor: "pointer",
-              transition: `background-color var(--motion-instant) var(--motion-easing)`,
-              whiteSpace: "nowrap",
-            }}
-            className="btn-primary"
-          >
-            View Projects
-            <ArrowIcon />
-          </a>
-
-          {/* Secondary CTA */}
-          <a
-            href="#contact"
-            id="hero-cta-contact"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--space-3)",
-              padding: "0 var(--space-9)",
-              height: "44px",
-              borderRadius: "var(--radius-md)",
-              backgroundColor: "transparent",
-              color: "var(--color-text-primary)",
-              fontSize: "16px",
-              fontWeight: "var(--font-weight-strong)",
-              textDecoration: "none",
-              border: "1.5px solid var(--color-border-strong)",
-              cursor: "pointer",
-              transition: `background-color var(--motion-instant) var(--motion-easing), border-color var(--motion-instant) var(--motion-easing)`,
-              whiteSpace: "nowrap",
-            }}
-            className="btn-secondary"
-          >
-            Get in Touch
-          </a>
-
-          {/* Download CV — only render if cv file is available */}
-          {profile.links.cv && (
-            <a
-              href={profile.links.cv}
-              download
-              id="hero-cta-cv"
+        {/* Right Column: Status Badge, Intro Copy & CTAs
+            Mobile: menempel di bawah layar (di atas "Scroll to explore")
+            Desktop (md+): kembali ke posisi normal di kanan atas */}
+        <div className="absolute bottom-24 left-[var(--gutter)] right-[var(--gutter)] z-[25] md:static md:bottom-auto md:left-auto md:right-auto md:z-auto max-w-[28rem] flex flex-col items-start md:items-end text-left md:text-right gap-4">
+          {/* Availability Badge */}
+          {profile.available && (
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] text-xs font-mono tracking-wider text-[var(--color-text-secondary)] transition-all will-change-transform"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "var(--space-3)",
-                padding: "0 var(--space-9)",
-                height: "44px",
-                borderRadius: "var(--radius-md)",
-                backgroundColor: "transparent",
-                color: "var(--color-text-primary)",
-                fontSize: "16px",
-                fontWeight: "var(--font-weight-strong)",
-                textDecoration: "none",
-                border: "1.5px solid var(--color-border-strong)",
-                cursor: "pointer",
-                transition: `background-color var(--motion-instant) var(--motion-easing)`,
-                whiteSpace: "nowrap",
+                opacity: isRevealed || isReducedMotion ? 1 : 0,
+                transform:
+                  isRevealed || isReducedMotion
+                    ? "translateY(0)"
+                    : "translateY(12px)",
+                transitionDuration: isReducedMotion ? "0ms" : "500ms",
+                transitionDelay: isReducedMotion ? "0ms" : "200ms",
               }}
-              className="btn-secondary"
             >
-              <DownloadIcon />
-              Download CV
-            </a>
+              <span className="w-2 h-2 rounded-full bg-[var(--color-status-success)] animate-pulse" />
+              Available for opportunities
+            </div>
           )}
-        </div>
 
-        {/* Scroll indicator */}
-        <div
-          aria-hidden="true"
-          style={{
-            marginTop: "var(--space-8)",
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-3)",
-          }}
-        >
-          <span
+          {/* Intro Description */}
+          <p
+            className="text-[1.0625rem] leading-[1.6] text-[var(--color-text-secondary)] transition-all will-change-transform"
             style={{
-              display: "block",
-              width: "1px",
-              height: "48px",
-              backgroundColor: "var(--color-border-strong)",
-              animation: "scroll-line 2s ease-in-out infinite",
-            }}
-          />
-          <span
-            style={{
-              fontFamily: "var(--font-accent)",
-              fontSize: "11px",
-              color: "var(--color-text-secondary)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              writingMode: "vertical-rl",
+              opacity: isRevealed || isReducedMotion ? 1 : 0,
+              transform:
+                isRevealed || isReducedMotion
+                  ? "translateY(0)"
+                  : "translateY(16px)",
+              transitionDuration: isReducedMotion ? "0ms" : "520ms",
+              transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+              transitionDelay: isReducedMotion ? "0ms" : "320ms",
             }}
           >
-            Scroll
-          </span>
+            {profile.subheadline ||
+              "Building thoughtful digital experiences. A Frontend Developer and UI/UX Designer focused on creating intuitive interfaces and polished web applications."}
+          </p>
+
+          {/* Action CTAs */}
+          <div
+            className="flex flex-wrap items-center gap-3 pt-2 transition-all will-change-transform"
+            style={{
+              opacity: isRevealed || isReducedMotion ? 1 : 0,
+              transform:
+                isRevealed || isReducedMotion
+                  ? "translateY(0)"
+                  : "translateY(16px)",
+              transitionDuration: isReducedMotion ? "0ms" : "520ms",
+              transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+              transitionDelay: isReducedMotion ? "0ms" : "440ms",
+            }}
+          >
+            <a
+              href="#projects"
+              id="hero-cta-projects"
+              className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              View Projects
+              <ArrowIcon />
+            </a>
+            <a
+              href="#contact"
+              id="hero-cta-contact"
+              className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-[var(--color-border-default)] bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] text-sm font-semibold transition-all hover:-translate-y-0.5"
+            >
+              Get in Touch
+            </a>
+          </div>
         </div>
       </div>
 
-      <style>{`
-        @keyframes pulse-badge {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-        @keyframes scroll-line {
-          0% { transform: scaleY(0); transform-origin: top; }
-          50% { transform: scaleY(1); transform-origin: top; }
-          51% { transform: scaleY(1); transform-origin: bottom; }
-          100% { transform: scaleY(0); transform-origin: bottom; }
-        }
+      {/* Layer 2: Oversized Hero Headline (Positioned behind portrait) */}
+      <div
+        className="absolute left-0 right-0 bottom-0 z-[5] pointer-events-none flex flex-col items-center justify-end"
+        style={{ transform: "translateY(6%)" }}
+      >
+        {/* Line 1: GUNTUR */}
+        <div className="hero-name-line flex justify-center">
+          {LINE_1.map((char, idx) => (
+            <span
+              key={`line1-${idx}`}
+              className="inline-block overflow-hidden align-top"
+            >
+              <span
+                className="inline-block transition-all will-change-transform"
+                style={{
+                  transform:
+                    isRevealed || isReducedMotion
+                      ? "translateY(0)"
+                      : "translateY(100%)",
+                  opacity: isRevealed || isReducedMotion ? 1 : 0,
+                  transitionDuration: isReducedMotion ? "0ms" : "900ms",
+                  transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                  transitionDelay: isReducedMotion
+                    ? "0ms"
+                    : `${80 + idx * 45}ms`,
+                }}
+              >
+                {char}
+              </span>
+            </span>
+          ))}
+        </div>
 
-        .btn-primary:hover {
-          background-color: var(--color-action-primary-bg-hover) !important;
-        }
-        .btn-primary:active {
-          background-color: var(--color-action-primary-bg-active) !important;
-        }
-        .btn-secondary:hover {
-          background-color: var(--color-surface-muted) !important;
-        }
-        .btn-secondary:active {
-          background-color: var(--color-surface-muted) !important;
-          border-color: var(--color-text-primary) !important;
-        }
+        {/* Line 2: LISTYO */}
+        <div className="hero-name-line flex justify-center">
+          {LINE_2.map((char, idx) => (
+            <span
+              key={`line2-${idx}`}
+              className="inline-block overflow-hidden align-top"
+            >
+              <span
+                className="inline-block transition-all will-change-transform"
+                style={{
+                  transform:
+                    isRevealed || isReducedMotion
+                      ? "translateY(0)"
+                      : "translateY(100%)",
+                  opacity: isRevealed || isReducedMotion ? 1 : 0,
+                  transitionDuration: isReducedMotion ? "0ms" : "900ms",
+                  transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                  transitionDelay: isReducedMotion
+                    ? "0ms"
+                    : `${260 + idx * 45}ms`,
+                }}
+              >
+                {char}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
 
-        /* Stack buttons on small screens */
-        @media (max-width: 479px) {
-          #hero-cta-projects,
-          #hero-cta-contact,
-          #hero-cta-cv {
-            width: 100%;
-            justify-content: center;
-          }
-        }
+      {/* Layer 3: Silhouette Portrait Media (Foreground cutout with liquid distortion) */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 h-[86vh] w-[80vw] sm:w-[48vw] lg:w-[36vw] pointer-events-auto"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <img
+          src={PORTRAIT_WEBP}
+          alt="Guntur Listyo Prabowo"
+          loading="eager"
+          fetchPriority="high"
+          className="w-full h-full object-cover object-bottom select-none"
+          style={{
+            filter: isReducedMotion ? "none" : "url(#portrait-distortion)",
+          }}
+        />
+      </div>
 
-        @media (prefers-reduced-motion: reduce) {
-          @keyframes pulse-badge { from {} to {} }
-          @keyframes scroll-line { from {} to {} }
-        }
-      `}</style>
+      {/* Layer 4: Bottom Gradient (Smoothly blends hero into the page surface) */}
+      <div
+        className="absolute bottom-0 left-0 w-full h-[26vh] z-[12] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, var(--color-surface-base))",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Layer 5: Scroll Cue (Positioned in lower-left corner) */}
+      <a
+        href="#about"
+        className="absolute bottom-8 left-[var(--gutter)] z-[25] flex items-center gap-3 transition-opacity will-change-transform group cursor-pointer"
+        style={{
+          opacity: isRevealed || isReducedMotion ? 1 : 0,
+          transitionDuration: isReducedMotion ? "0ms" : "600ms",
+          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+          transitionDelay: isReducedMotion ? "0ms" : "700ms",
+        }}
+        aria-label="Scroll down to About section"
+      >
+        {/* Accent Vertical Rule */}
+        <div className="w-[1.5px] h-10 bg-[var(--color-accent-start)] transition-transform duration-300 group-hover:scale-y-125 origin-top" />
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors">
+          Scroll to explore
+        </span>
+      </a>
     </section>
   );
 }

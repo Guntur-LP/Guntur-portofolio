@@ -1,41 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Plus+Jakarta+Sans+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Onest:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Plus+Jakarta+Sans+Mono:wght@400;600&display=swap');
 @import "tailwindcss";
 
 /* =============================================
    DESIGN TOKENS — CSS Variables
+   Blue-Green Gradient Palette + Marcus Vane Hero Tokens
    ============================================= */
 
 :root {
-  /* Surface */
-  --color-surface-base: #faf9f7;
-  --color-surface-muted: #f0eeeb;
+  /* Surface — light mode: blue-tinted off-white */
+  --color-surface-base: #f0f4ff;
+  --color-surface-muted: #e4ecff;
   --color-surface-raised: #ffffff;
 
   /* Text */
-  --color-text-primary: #16120f;
-  --color-text-secondary: #5c5750;
-  --color-text-disabled: #8a857e;
-  --color-text-inverse: #faf9f7;
+  --color-text-primary: #0d1f3c;
+  --color-text-secondary: #4a6080;
+  --color-text-disabled: #8ea4be;
+  --color-text-inverse: #f0f4ff;
 
   /* Border */
-  --color-border-default: rgba(22, 18, 15, 0.12);
-  --color-border-strong: rgba(22, 18, 15, 0.55);
+  --color-border-default: rgba(13, 31, 60, 0.10);
+  --color-border-strong: rgba(13, 31, 60, 0.45);
 
   /* Focus */
-  --color-focus-ring: #16120f;
+  --color-focus-ring: #0d1f3c;
 
-  /* Action Primary */
-  --color-action-primary-bg: #16120f;
-  --color-action-primary-bg-hover: #2f2a26;
-  --color-action-primary-bg-active: #45403b;
-  --color-action-primary-fg: #faf9f7;
+  /* Action Primary — deep blue */
+  --color-action-primary-bg: #0d1f3c;
+  --color-action-primary-bg-hover: #1a3260;
+  --color-action-primary-bg-active: #264880;
+  --color-action-primary-fg: #f0f4ff;
+
+  /* Accent — blue-green gradient references */
+  --color-accent-start: #2563eb;
+  --color-accent-end: #10b981;
+  --color-accent-gradient: linear-gradient(135deg, #2563eb 0%, #0ea5e9 40%, #10b981 100%);
+  --color-accent-gradient-soft: linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(16,185,129,0.12) 100%);
+
+  /* Marcus Vane Accent Tokens */
+  --accent-red: #ff3b1d;
+  --accent-orange: #ff6a3d;
+  --font-display: "Anton", sans-serif;
+  --font-hero-sans: "Onest", sans-serif;
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
 
   /* Status */
-  --color-status-error: #b42318;
-  --color-status-success: #067647;
+  --color-status-error: #dc2626;
+  --color-status-success: #059669;
 
   /* Overlay */
-  --color-overlay: rgba(22, 18, 15, 0.50);
+  --color-overlay: rgba(13, 31, 60, 0.55);
 
   /* Typography */
   --font-primary: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -63,7 +77,8 @@
   --radius-full: 9999px;
 
   /* Shadow */
-  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.40);
+  --shadow-card: 0 4px 24px rgba(37, 99, 235, 0.08);
+  --shadow-modal: 0 24px 64px rgba(13, 31, 60, 0.30);
 
   /* Z-index */
   --z-nav: 40;
@@ -83,45 +98,57 @@
 /* Dark theme — follows system preference */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-surface-base: #000000;
-    --color-surface-muted: #16120f;
-    --color-surface-raised: #0a0a0a;
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #a8a49e;
-    --color-text-disabled: #6b6863;
-    --color-text-inverse: #cecdc9;
-    --color-border-default: rgba(255, 255, 255, 0.10);
-    --color-border-strong: rgba(255, 255, 255, 0.45);
-    --color-focus-ring: #ffffff;
-    --color-action-primary-bg: #ffffff;
-    --color-action-primary-bg-hover: #e6e4e0;
-    --color-action-primary-bg-active: #cecdc9;
-    --color-action-primary-fg: #000000;
-    --color-status-error: #ff8a80;
-    --color-status-success: #7ee2a8;
-    --color-overlay: rgba(0, 0, 0, 0.60);
+    --color-surface-base: #040d1a;
+    --color-surface-muted: #071225;
+    --color-surface-raised: #0a1628;
+    --color-text-primary: #e8f0ff;
+    --color-text-secondary: #7ba3cc;
+    --color-text-disabled: #3d5a78;
+    --color-text-inverse: #040d1a;
+    --color-border-default: rgba(120, 180, 255, 0.10);
+    --color-border-strong: rgba(120, 180, 255, 0.35);
+    --color-focus-ring: #60a5fa;
+    --color-action-primary-bg: linear-gradient(135deg, #2563eb, #10b981);
+    --color-action-primary-bg-hover: #1d4ed8;
+    --color-action-primary-bg-active: #1e40af;
+    --color-action-primary-fg: #ffffff;
+    --color-accent-start: #60a5fa;
+    --color-accent-end: #34d399;
+    --color-accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 40%, #10b981 100%);
+    --color-accent-gradient-soft: linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(16,185,129,0.15) 100%);
+    --color-status-error: #f87171;
+    --color-status-success: #34d399;
+    --color-overlay: rgba(4, 13, 26, 0.80);
+    --shadow-card: 0 4px 24px rgba(37, 99, 235, 0.15);
+    --shadow-modal: 0 24px 64px rgba(4, 13, 26, 0.60);
   }
 }
 
 /* Dark theme — explicit user choice */
 :root[data-theme="dark"] {
-  --color-surface-base: #000000;
-  --color-surface-muted: #16120f;
-  --color-surface-raised: #0a0a0a;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a8a49e;
-  --color-text-disabled: #6b6863;
-  --color-text-inverse: #cecdc9;
-  --color-border-default: rgba(255, 255, 255, 0.10);
-  --color-border-strong: rgba(255, 255, 255, 0.45);
-  --color-focus-ring: #ffffff;
-  --color-action-primary-bg: #ffffff;
-  --color-action-primary-bg-hover: #e6e4e0;
-  --color-action-primary-bg-active: #cecdc9;
-  --color-action-primary-fg: #000000;
-  --color-status-error: #ff8a80;
-  --color-status-success: #7ee2a8;
-  --color-overlay: rgba(0, 0, 0, 0.60);
+  --color-surface-base: #040d1a;
+  --color-surface-muted: #071225;
+  --color-surface-raised: #0a1628;
+  --color-text-primary: #e8f0ff;
+  --color-text-secondary: #7ba3cc;
+  --color-text-disabled: #3d5a78;
+  --color-text-inverse: #040d1a;
+  --color-border-default: rgba(120, 180, 255, 0.10);
+  --color-border-strong: rgba(120, 180, 255, 0.35);
+  --color-focus-ring: #60a5fa;
+  --color-action-primary-bg: #2563eb;
+  --color-action-primary-bg-hover: #1d4ed8;
+  --color-action-primary-bg-active: #1e40af;
+  --color-action-primary-fg: #ffffff;
+  --color-accent-start: #60a5fa;
+  --color-accent-end: #34d399;
+  --color-accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 40%, #10b981 100%);
+  --color-accent-gradient-soft: linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(16,185,129,0.15) 100%);
+  --color-status-error: #f87171;
+  --color-status-success: #34d399;
+  --color-overlay: rgba(4, 13, 26, 0.80);
+  --shadow-card: 0 4px 24px rgba(37, 99, 235, 0.15);
+  --shadow-modal: 0 24px 64px rgba(4, 13, 26, 0.60);
 }
 
 /* =============================================
@@ -179,8 +206,8 @@ body {
   left: var(--space-4);
   z-index: var(--z-skip);
   padding: var(--space-3) var(--space-5);
-  background: var(--color-action-primary-bg);
-  color: var(--color-action-primary-fg);
+  background: var(--color-accent-gradient);
+  color: #ffffff;
   font-weight: var(--font-weight-strong);
   border-radius: var(--radius-md);
   text-decoration: none;
@@ -217,6 +244,30 @@ section[id] {
 }
 
 /* =============================================
+   GRADIENT TEXT UTILITY
+   ============================================= */
+
+.gradient-text {
+  background: var(--color-accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =============================================
+   GRADIENT ACCENT LINE
+   ============================================= */
+
+.accent-line {
+  display: block;
+  width: 48px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-gradient);
+  margin-bottom: var(--space-5);
+}
+
+/* =============================================
    TYPOGRAPHY UTILITIES
    ============================================= */
 
@@ -227,6 +278,35 @@ section[id] {
 
 .text-secondary {
   color: var(--color-text-secondary);
+}
+
+/* =============================================
+   EDITORIAL HERO TYPOGRAPHY (Marcus Vane style)
+   ============================================= */
+
+.hero-name-line {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: var(--color-accent-start);
+  line-height: 0.78;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  font-size: clamp(4.25rem, 18vw, 26rem);
+  user-select: none;
+}
+
+:root[data-theme="dark"] .hero-name-line,
+:root:not([data-theme="light"]) .hero-name-line {
+  color: var(--color-accent-end); /* Hijau dari gradient button */
+}
+
+.founder-role-text {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
 }
 
 /* =============================================
@@ -251,4 +331,41 @@ section[id] {
     transform: none;
     transition: none;
   }
+}
+
+/* =============================================
+   GLOBAL BUTTON CLASSES
+   ============================================= */
+
+.btn-primary {
+  background: var(--color-accent-gradient) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.30);
+  transition: opacity var(--motion-instant) var(--motion-easing),
+              box-shadow var(--motion-instant) var(--motion-easing) !important;
+}
+
+.btn-primary:hover {
+  opacity: 0.88 !important;
+  box-shadow: 0 6px 28px rgba(37, 99, 235, 0.45) !important;
+}
+
+.btn-primary:active {
+  opacity: 0.75 !important;
+}
+
+.btn-secondary {
+  transition: background-color var(--motion-instant) var(--motion-easing),
+              border-color var(--motion-instant) var(--motion-easing) !important;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-muted) !important;
+  border-color: var(--color-accent-start) !important;
+}
+
+.btn-secondary:active {
+  background-color: var(--color-surface-muted) !important;
+  border-color: var(--color-accent-end) !important;
 }

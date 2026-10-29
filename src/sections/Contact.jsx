@@ -339,7 +339,7 @@ export default function Contact() {
                 backgroundColor: "var(--color-surface-raised)",
                 display: "flex",
                 flexDirection: "column",
-                gap: "var(--space-6)",
+                gap: "var(--space-4)",
               }}
             >
               {/* Honeypot — hidden from users and screen readers */}
@@ -384,7 +384,7 @@ export default function Contact() {
                   style={{
                     display: "flex",
                     alignItems: "flex-start",
-                    gap: "var(--space-3)",
+                    gap: "var(--space-)",
                     padding: "var(--space-5)",
                     borderRadius: "var(--radius-md)",
                     backgroundColor: "var(--color-surface-muted)",

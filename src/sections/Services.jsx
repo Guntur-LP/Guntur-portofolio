@@ -68,8 +68,9 @@ function ServiceCard({ service, index }) {
           width: "48px",
           height: "48px",
           borderRadius: "var(--radius-md)",
-          border: "1px solid var(--color-border-default)",
-          color: "var(--color-text-primary)",
+          border: "1.5px solid transparent",
+          background: "linear-gradient(var(--color-surface-raised), var(--color-surface-raised)) padding-box, var(--color-accent-gradient) border-box",
+          color: "var(--color-accent-start)",
           flexShrink: 0,
         }}
         aria-hidden="true"
@@ -208,14 +209,10 @@ export default function Services() {
               padding: "0 var(--space-9)",
               height: "44px",
               borderRadius: "var(--radius-md)",
-              backgroundColor: "var(--color-action-primary-bg)",
-              color: "var(--color-action-primary-fg)",
               fontSize: "15px",
               fontWeight: "var(--font-weight-strong)",
               textDecoration: "none",
-              border: "none",
               cursor: "pointer",
-              transition: `background-color var(--motion-instant) var(--motion-easing)`,
               whiteSpace: "nowrap",
               flexShrink: 0,
             }}
@@ -228,13 +225,8 @@ export default function Services() {
 
       <style>{`
         .service-card:hover {
-          border-color: var(--color-border-strong) !important;
-        }
-        .btn-primary:hover {
-          background-color: var(--color-action-primary-bg-hover) !important;
-        }
-        .btn-primary:active {
-          background-color: var(--color-action-primary-bg-active) !important;
+          border-color: var(--color-accent-start) !important;
+          box-shadow: var(--shadow-card) !important;
         }
       `}</style>
     </section>

@@ -19,16 +19,23 @@ export default function SectionHeader({ number, eyebrow, heading, description, h
       className="reveal"
       style={{ marginBottom: "var(--space-8)" }}
     >
+      {/* Accent line */}
+      <span className="accent-line" aria-hidden="true" />
+
       {/* Eyebrow */}
       <p
         style={{
           fontFamily: "var(--font-accent)",
           fontSize: "12px",
-          color: "var(--color-text-secondary)",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           marginTop: 0,
           marginBottom: "var(--space-4)",
+          background: "var(--color-accent-gradient)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          display: "inline-block",
         }}
       >
         {number} — {eyebrow}

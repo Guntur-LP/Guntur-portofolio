@@ -50,28 +50,14 @@ export const profile = {
   experience: [
     {
       id: "exp-1",
-      role: "Frontend Developer",
-      company: "Freelance",
-      period: "2023 — Present",
-      description:
-        "Designing and developing custom web applications and interfaces for clients across various industries. Focus on clean code, performance, and exceptional user experience.",
+      role: "UI Designer",
+      company: "PT.Telkom Indonesia",
+      period: "Feb 2025 — Feb 2026",
       contributions: [
-        "Built responsive web applications using React and Next.js",
-        "Designed UI components with Figma and implemented them in production",
-        "Optimized web performance to achieve Core Web Vitals targets",
-      ],
-    },
-    {
-      id: "exp-2",
-      role: "UI/UX Designer",
-      company: "Academic Projects — Bina Nusantara University",
-      period: "2022 — Present",
-      description:
-        "Led design initiatives for multiple academic projects, creating comprehensive design systems and prototypes that bridge user needs with technical constraints.",
-      contributions: [
-        "Created user research-driven prototypes and design systems in Figma",
-        "Collaborated with development teams to ensure design implementation fidelity",
-        "Conducted usability testing and iterated designs based on feedback",
+        "Designed responsive web and mobile interfaces for Antares Eazy, supporting a consistent user experience across devices",
+        "Designed and refined Eazy Store features, including checkout, transaction status, and shipment tracking, to improve access to order information",
+        "Created wireframes, user flows, high-fidelity UI designs, and interactive prototypes in Figma for web, dashboard, and IoT monitoring features.",
+        "Collaborated with Product Managers and Developers to align UI designs with product requirements and support implementation"
       ],
     },
   ],
