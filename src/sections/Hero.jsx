@@ -7,7 +7,7 @@ const LINE_2 = "LISTYO".split("");
 
 // Hero assets
 const PORTRAIT_WEBP =
-  "../images/Hero/New.png";
+  "../images/Hero/New.webp";
 
 // CTA Arrow Icon
 function ArrowIcon() {
@@ -158,7 +158,7 @@ export default function Hero() {
     <section
       id="hero"
       aria-label="Introduction"
-      className="relative flex flex-col min-h-[100svh] w-full overflow-hidden select-none"
+      className="relative flex flex-col min-h-svh w-full overflow-hidden select-none"
       style={{
         backgroundColor: "var(--color-surface-base)",
       }}
@@ -199,7 +199,7 @@ export default function Hero() {
       </svg>
 
       {/* Layer 1: Top Row (Role Labels + Availability & Intro Description) */}
-      <div className="md:relative z-20 w-full px-[var(--gutter)] pt-[clamp(6rem,12vh,8.5rem)] flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0">
+      <div className="md:relative z-20 w-full px-(--gutter) pt-[clamp(6rem,12vh,8.5rem)] flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0">
         {/* Left Column: Stacked Role Labels (Anton typography) */}
         <div className="flex flex-col">
           {ROLES.map((role, idx) => (
@@ -227,11 +227,11 @@ export default function Hero() {
         {/* Right Column: Status Badge, Intro Copy & CTAs
             Mobile: menempel di bawah layar (di atas "Scroll to explore")
             Desktop (md+): kembali ke posisi normal di kanan atas */}
-        <div className="absolute bottom-24 left-[var(--gutter)] right-[var(--gutter)] z-[25] md:static md:bottom-auto md:left-auto md:right-auto md:z-auto max-w-[28rem] flex flex-col items-start md:items-end text-left md:text-right gap-4">
+        <div className="absolute bottom-24 left-(--gutter) right-(--gutter) z-25 md:static md:bottom-auto md:left-auto md:right-auto md:z-auto max-w-md flex flex-col items-start md:items-end text-left md:text-right gap-4">
           {/* Availability Badge */}
           {profile.available && (
             <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] text-xs font-mono tracking-wider text-[var(--color-text-secondary)] transition-all will-change-transform"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-(--color-border-default) bg-(--color-surface-muted) text-xs font-mono tracking-wider text-(--color-text-secondary) transition-all will-change-transform"
               style={{
                 opacity: isRevealed || isReducedMotion ? 1 : 0,
                 transform:
@@ -242,14 +242,14 @@ export default function Hero() {
                 transitionDelay: isReducedMotion ? "0ms" : "200ms",
               }}
             >
-              <span className="w-2 h-2 rounded-full bg-[var(--color-status-success)] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-(--color-status-success) animate-pulse" />
               Available for opportunities
             </div>
           )}
 
           {/* Intro Description */}
           <p
-            className="text-[1.0625rem] leading-[1.6] text-[var(--color-text-secondary)] transition-all will-change-transform"
+            className="text-[1.0625rem] leading-[1.6] text-(--color-text-secondary) transition-all will-change-transform"
             style={{
               opacity: isRevealed || isReducedMotion ? 1 : 0,
               transform:
@@ -290,7 +290,7 @@ export default function Hero() {
             <a
               href="#contact"
               id="hero-cta-contact"
-              className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-[var(--color-border-default)] bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] text-sm font-semibold transition-all hover:-translate-y-0.5"
+              className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
             >
               Get in Touch
             </a>
@@ -300,7 +300,7 @@ export default function Hero() {
 
       {/* Layer 2: Oversized Hero Headline (Positioned behind portrait) */}
       <div
-        className="absolute left-0 right-0 bottom-0 z-[5] pointer-events-none flex flex-col items-center justify-end"
+        className="absolute left-0 right-0 bottom-0 z-5 pointer-events-none flex flex-col items-center justify-end"
         style={{ transform: "translateY(6%)" }}
       >
         {/* Line 1: GUNTUR */}
@@ -380,7 +380,7 @@ export default function Hero() {
 
       {/* Layer 4: Bottom Gradient (Smoothly blends hero into the page surface) */}
       <div
-        className="absolute bottom-0 left-0 w-full h-[26vh] z-[12] pointer-events-none"
+        className="absolute bottom-0 left-0 w-full h-[26vh] z-12 pointer-events-none"
         style={{
           background:
             "linear-gradient(to bottom, transparent, var(--color-surface-base))",
@@ -391,7 +391,7 @@ export default function Hero() {
       {/* Layer 5: Scroll Cue (Positioned in lower-left corner) */}
       <a
         href="#about"
-        className="absolute bottom-8 left-[var(--gutter)] z-[25] flex items-center gap-3 transition-opacity will-change-transform group cursor-pointer"
+        className="absolute bottom-8 left-(--gutter) z-25 flex items-center gap-3 transition-opacity will-change-transform group cursor-pointer"
         style={{
           opacity: isRevealed || isReducedMotion ? 1 : 0,
           transitionDuration: isReducedMotion ? "0ms" : "600ms",
@@ -401,8 +401,8 @@ export default function Hero() {
         aria-label="Scroll down to About section"
       >
         {/* Accent Vertical Rule */}
-        <div className="w-[1.5px] h-10 bg-[var(--color-accent-start)] transition-transform duration-300 group-hover:scale-y-125 origin-top" />
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors">
+        <div className="w-[1.5px] h-10 bg-(--color-accent-start) transition-transform duration-300 group-hover:scale-y-125 origin-top" />
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-(--color-text-secondary) group-hover:text-(--color-text-primary) transition-colors">
           Scroll to explore
         </span>
       </a>
