@@ -1,73 +1,76 @@
 // src/components/SectionHeader.jsx
-import { useScrollReveal } from "../hooks/useScrollReveal";
 
-/**
- * Reusable section header component.
- * Renders eyebrow text, h2 heading, and optional description.
- * @param {string} number - Section number, e.g. "02"
- * @param {string} eyebrow - Eyebrow label
- * @param {string} heading - Main h2 heading text
- * @param {string} [description] - Optional description paragraph
- * @param {string} headingId - ID for the h2, used with aria-labelledby on section
- */
 export default function SectionHeader({ number, eyebrow, heading, description, headingId }) {
-  const ref = useScrollReveal();
-
   return (
     <div
-      ref={ref}
-      className="reveal"
-      style={{ marginBottom: "var(--space-8)" }}
+      style={{
+        marginBottom: "clamp(24px, 3vw, 36px)",
+      }}
     >
-      {/* Accent line */}
-      <span className="accent-line" aria-hidden="true" />
-
-      {/* Eyebrow */}
-      <p
+      {/* Clean Architectural Eyebrow Badge */}
+      <div
         style={{
-          fontFamily: "var(--font-accent)",
-          fontSize: "12px",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          marginTop: 0,
-          marginBottom: "var(--space-4)",
-          background: "var(--color-accent-gradient)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          display: "inline-block",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          padding: "5px 12px",
+          borderRadius: "var(--radius-sm)",
+          backgroundColor: "var(--surface)",
+          border: "1px solid var(--border)",
+          marginBottom: "14px",
         }}
       >
-        {number} — {eyebrow}
-      </p>
+        <span
+          style={{
+            width: "6px",
+            height: "6px",
+            borderRadius: "50%",
+            backgroundColor: "var(--primary)",
+            display: "inline-block",
+          }}
+          aria-hidden="true"
+        />
+        <span
+          style={{
+            fontFamily: "var(--font-accent)",
+            fontSize: "11px",
+            fontWeight: 600,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--muted-foreground)",
+          }}
+        >
+          {number} / {eyebrow}
+        </span>
+      </div>
 
-      {/* h2 */}
+      {/* Main Heading */}
       <h2
         id={headingId}
         style={{
-          fontSize: "clamp(1.75rem, 4vw, 2rem)",
-          fontWeight: 700,
-          lineHeight: 1.2,
-          letterSpacing: "-0.02em",
-          color: "var(--color-text-primary)",
-          marginTop: 0,
-          marginBottom: description ? "var(--space-5)" : 0,
-          maxWidth: "600px",
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(2.1rem, 3.8vw, 3rem)",
+          fontWeight: 400,
+          lineHeight: 1.15,
+          letterSpacing: "0.02em",
+          color: "var(--foreground)",
+          margin: 0,
+          marginBottom: description ? "12px" : 0,
+          maxWidth: "760px",
         }}
       >
         {heading}
       </h2>
 
-      {/* Optional description */}
+      {/* Description */}
       {description && (
         <p
           style={{
-            fontSize: "18px",
-            lineHeight: "28px",
-            color: "var(--color-text-secondary)",
-            maxWidth: "580px",
-            marginTop: 0,
-            marginBottom: 0,
+            fontSize: "15px",
+            lineHeight: "26px",
+            color: "var(--muted-foreground)",
+            margin: 0,
+            maxWidth: "600px",
           }}
         >
           {description}

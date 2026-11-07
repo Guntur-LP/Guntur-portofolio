@@ -1,10 +1,10 @@
 // src/components/Navbar.jsx
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../hooks/useTheme";
+import SkyToggle from "./ui/SkyToggle";
 
 const navLinks = [
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
@@ -64,6 +64,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const menuButtonRef = useRef(null);
+  const isNavigatingRef = useRef(false);
+  const navigationTimeoutRef = useRef(null);
   const menuId = "mobile-nav-menu";
 
   // Detect scroll for navbar styling
@@ -73,25 +75,97 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Detect active section via IntersectionObserver
+  // Detect active section via high-precision scroll spy
   useEffect(() => {
     const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
-    const observers = [];
+    let ticking = false;
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { rootMargin: "-40% 0px -55% 0px" }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
+    const determineActiveSection = () => {
+      // If user clicked a nav link and smooth scroll is in progress, preserve clicked active section
+      if (isNavigatingRef.current) return;
 
-    return () => observers.forEach((o) => o.disconnect());
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // 1. If at the top of the page (Hero section), no section link should be active
+      const aboutEl = document.getElementById("about");
+      const aboutTop = aboutEl ? aboutEl.getBoundingClientRect().top + scrollY : 500;
+      if (scrollY < Math.max(120, aboutTop - 250)) {
+        setActiveSection("");
+        return;
+      }
+
+      // 2. If scrolled near the bottom of the page, the last section (Contact) is always active
+      if (windowHeight + scrollY >= documentHeight - 60) {
+        setActiveSection(sectionIds[sectionIds.length - 1]);
+        return;
+      }
+
+      // 3. Focal reading line: ~25% down the viewport (minimum 120px to sit below 72px navbar)
+      const focalLine = Math.max(120, windowHeight * 0.25);
+
+      // Find the section that contains the focal reading line
+      let matchedSection = "";
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= focalLine && rect.bottom > focalLine) {
+          matchedSection = id;
+          break;
+        }
+      }
+
+      // Fallback: pick the latest section that has crossed the focal line and is still visible
+      if (!matchedSection) {
+        for (const id of sectionIds) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= focalLine && rect.bottom > 72) {
+            matchedSection = id;
+          }
+        }
+      }
+
+      if (matchedSection) {
+        setActiveSection(matchedSection);
+      }
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          determineActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // User manual interactions cancel programmatic navigation lock immediately
+    const unlockNav = () => {
+      isNavigatingRef.current = false;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    window.addEventListener("wheel", unlockNav, { passive: true });
+    window.addEventListener("touchmove", unlockNav, { passive: true });
+    window.addEventListener("pointerdown", unlockNav, { passive: true });
+
+    // Initial check on mount
+    determineActiveSection();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("wheel", unlockNav);
+      window.removeEventListener("touchmove", unlockNav);
+      window.removeEventListener("pointerdown", unlockNav);
+      if (navigationTimeoutRef.current) clearTimeout(navigationTimeoutRef.current);
+    };
   }, []);
 
   // Close menu on Escape
@@ -110,16 +184,20 @@ export default function Navbar() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Close menu on outside click
+  // Close menu on outside click or touch
   useEffect(() => {
     if (!menuOpen) return;
     const handleClick = (e) => {
-      if (!e.target.closest("nav")) {
+      if (!e.target.closest("nav") && !e.target.closest(".mobile-menu")) {
         setMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("touchstart", handleClick, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("touchstart", handleClick);
+    };
   }, [menuOpen]);
 
   // Prevent body scroll when menu open
@@ -132,17 +210,50 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const handleNavClick = (href) => {
+  const handleNavClick = (e, href) => {
+    if (href.startsWith("#")) {
+      e?.preventDefault();
+    }
     setMenuOpen(false);
-    // Move focus to section heading
+    document.body.style.overflow = "";
+
     const id = href.replace("#", "");
+    setActiveSection(id);
+
+    // Lock programmatic navigation so intermediate sections don't flash during smooth scroll
+    isNavigatingRef.current = true;
+    if (navigationTimeoutRef.current) clearTimeout(navigationTimeoutRef.current);
+    navigationTimeoutRef.current = setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 800);
+
+    // Smooth scroll to target section
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Move focus to section heading
     setTimeout(() => {
       const heading = document.querySelector(`#${id} h2, #${id} h1`);
       if (heading) {
         heading.setAttribute("tabindex", "-1");
         heading.focus({ preventScroll: true });
       }
-    }, 100);
+    }, 150);
+  };
+
+  const handleBrandClick = (e) => {
+    e?.preventDefault();
+    setMenuOpen(false);
+    document.body.style.overflow = "";
+    setActiveSection("");
+    isNavigatingRef.current = true;
+    if (navigationTimeoutRef.current) clearTimeout(navigationTimeoutRef.current);
+    navigationTimeoutRef.current = setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 800);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -160,17 +271,20 @@ export default function Navbar() {
           right: 0,
           zIndex: "var(--z-nav)",
           height: "72px",
-          backgroundColor: scrolled
-            ? "var(--color-surface-base)"
-            : "var(--color-surface-base)",
-          borderBottom: `1px solid ${scrolled ? "var(--color-border-default)" : "transparent"}`,
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          transition: `border-color var(--motion-instant) var(--motion-easing), backdrop-filter var(--motion-instant) var(--motion-easing)`,
+          backgroundColor: menuOpen
+            ? "var(--background)"
+            : scrolled
+            ? "var(--nav-bg)"
+            : "transparent",
+          backdropFilter: menuOpen ? "none" : "blur(16px)",
+          WebkitBackdropFilter: menuOpen ? "none" : "blur(16px)",
+          borderBottom: "none",
+          transition: `background-color var(--motion-base) var(--motion-easing)`,
         }}
         aria-label="Main navigation"
       >
         <div
-          className="container"
+          className="relative w-full px-(--gutter)"
           style={{
             height: "100%",
             display: "flex",
@@ -182,32 +296,33 @@ export default function Navbar() {
           <a
             href="#top"
             aria-label="Guntur Listyo Prabowo, back to top"
+            onClick={handleBrandClick}
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "var(--space-3)",
+              justifyContent: "center",
               textDecoration: "none",
-              color: "var(--color-text-primary)",
+              transition: `transform var(--motion-instant) var(--motion-easing), opacity var(--motion-instant) var(--motion-easing)`,
+              flexShrink: 0,
             }}
-            className="brand-link"
+            className="brand-link group"
           >
-            {/* Name — hidden below md */}
-            <span
-              style={{
-                fontSize: "18px",
-                fontWeight: "var(--font-weight-strong)",
-                color: "var(--color-text-primary)",
-                lineHeight: 1,
-              }}
-              className="brand-name"
-            >
-              Guntur Listyo Prabowo
-            </span>
+            {/* Logo Image */}
+            <img
+              src="/images/Logo2.webp"
+              alt="GLP Logo"
+              width="68"
+              height="68"
+              className="w-14.5 h-14.5 md:w-24 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105"
+            />
           </a>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links (Precisely centered horizontally against the viewport) */}
           <ul
             style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
               display: "flex",
               alignItems: "center",
               gap: "var(--space-10)",
@@ -215,7 +330,7 @@ export default function Navbar() {
               margin: 0,
               padding: 0,
             }}
-            className="desktop-nav-links"
+            className="desktop-nav-links pointer-events-auto"
           >
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace("#", "");
@@ -224,18 +339,16 @@ export default function Navbar() {
                   <a
                     href={link.href}
                     aria-current={isActive ? "location" : undefined}
-                    onClick={() => handleNavClick(link.href)}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     style={{
                       fontSize: "14px",
-                      fontWeight: "var(--font-weight-base)",
-                      color: isActive
-                        ? "var(--color-text-primary)"
-                        : "var(--color-text-secondary)",
+                      fontWeight: isActive ? "var(--font-weight-strong)" : "var(--font-weight-base)",
+                      color: "var(--color-text-primary)",
                       textDecoration: isActive ? "underline" : "none",
-                      textUnderlineOffset: "3px",
+                      textUnderlineOffset: "4px",
                       transition: `color var(--motion-instant) var(--motion-easing)`,
                     }}
-                    className="nav-link"
+                    className={`nav-link ${isActive ? "active" : ""}`}
                   >
                     {link.label}
                   </a>
@@ -246,33 +359,18 @@ export default function Navbar() {
 
           {/* Right Controls */}
           <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              aria-label={
+            {/* Sky Theme Toggle */}
+            <SkyToggle
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+              ariaLabel={
                 theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
               }
-              style={{
-                width: "44px",
-                height: "44px",
-                borderRadius: "var(--radius-full)",
-                border: "1.5px solid var(--color-border-strong)",
-                background: "transparent",
-                color: "var(--color-text-primary)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: `background-color var(--motion-instant) var(--motion-easing)`,
-                flexShrink: 0,
-              }}
-              className="theme-toggle"
-            >
-              {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-            </button>
+            />
 
             {/* Mobile Menu Button */}
             <button
+              type="button"
               ref={menuButtonRef}
               onClick={() => setMenuOpen((prev) => !prev)}
               aria-expanded={menuOpen}
@@ -282,14 +380,15 @@ export default function Navbar() {
                 width: "44px",
                 height: "44px",
                 borderRadius: "var(--radius-md)",
-                border: "1.5px solid var(--color-border-strong)",
-                background: "transparent",
-                color: "var(--color-text-primary)",
+                border: "1px solid var(--border)",
+                backgroundColor: "var(--surface)",
+                color: "var(--foreground)",
+                boxShadow: "0 2px 12px rgba(0, 0, 0, 0.06)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                transition: `background-color var(--motion-instant) var(--motion-easing)`,
+                transition: `all var(--motion-instant) var(--motion-easing)`,
               }}
               className="mobile-menu-btn"
             >
@@ -309,17 +408,16 @@ export default function Navbar() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "var(--color-surface-base)",
-            borderTop: "1px solid var(--color-border-default)",
+            height: "calc(100dvh - 72px)",
+            backgroundColor: "var(--background)",
+            borderTop: "1px solid var(--border)",
             padding: "var(--space-5)",
-            display: "flex",
+            display: menuOpen ? "flex" : "none",
             flexDirection: "column",
             gap: "var(--space-3)",
             overflowY: "auto",
-            opacity: menuOpen ? 1 : 0,
-            transform: menuOpen ? "translateY(0)" : "translateY(-8px)",
-            pointerEvents: menuOpen ? "auto" : "none",
-            transition: `opacity var(--motion-base) var(--motion-easing), transform var(--motion-base) var(--motion-easing)`,
+            WebkitOverflowScrolling: "touch",
+            zIndex: 999,
           }}
           className="mobile-menu"
         >
@@ -332,7 +430,7 @@ export default function Navbar() {
                 role="menuitem"
                 tabIndex={menuOpen ? 0 : -1}
                 aria-current={isActive ? "location" : undefined}
-                onClick={() => handleNavClick(link.href)}
+                onClick={(e) => handleNavClick(e, link.href)}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -341,9 +439,7 @@ export default function Navbar() {
                   borderRadius: "var(--radius-md)",
                   border: "1px solid var(--color-border-default)",
                   textDecoration: "none",
-                  color: isActive
-                    ? "var(--color-text-primary)"
-                    : "var(--color-text-secondary)",
+                  color: "var(--color-text-primary)",
                   backgroundColor: isActive
                     ? "var(--color-surface-muted)"
                     : "transparent",
@@ -372,25 +468,26 @@ export default function Navbar() {
       </nav>
 
       <style>{`
-        .brand-link:hover .brand-name {
-          text-decoration: underline;
-          text-underline-offset: 3px;
+        .brand-link:hover {
+          opacity: 0.85;
         }
         .brand-link:active {
-          opacity: 0.8;
+          opacity: 0.7;
         }
         .nav-link:hover {
           color: var(--color-text-primary) !important;
+          text-decoration: underline;
         }
-        .theme-toggle:hover {
-          background-color: var(--color-surface-muted) !important;
-        }
-        .theme-toggle:active {
-          background-color: var(--color-surface-muted) !important;
-          border-color: var(--color-text-primary) !important;
+        .nav-link:active, .nav-link.active {
+          color: var(--color-text-primary) !important;
         }
         .mobile-menu-btn:hover {
-          background-color: var(--color-surface-muted) !important;
+          background-color: var(--surface-muted) !important;
+          border-color: var(--primary) !important;
+          color: var(--primary) !important;
+        }
+        .mobile-menu a:hover {
+          color: var(--color-text-primary) !important;
         }
 
         /* Desktop: show nav links, hide mobile button */
@@ -403,12 +500,6 @@ export default function Navbar() {
         @media (max-width: 767px) {
           .desktop-nav-links { display: none !important; }
           .brand-name { display: none !important; }
-        }
-
-        @media (hover: hover) {
-          .nav-link:hover {
-            color: var(--color-text-primary) !important;
-          }
         }
       `}</style>
     </>

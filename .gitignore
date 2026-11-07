@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# AI & Coding Agent Workspaces / Caches
+.claude/
+.cursor/
+.cursorrules.local
+.copilot/
+.codeium/
+.aidev/
+.agent/
+.agents/
+replicas/
+.replicas/
+
+# Ignore semua file markdown
+*.md
+
+# Kecualikan README utama agar tetap terlacak di repo
+!README.md
+!readme.md

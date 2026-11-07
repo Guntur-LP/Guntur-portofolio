@@ -4,7 +4,7 @@ import SectionHeader from "../components/SectionHeader";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { projects } from "../data/projects";
 
-// Close icon
+// Close Icon
 function CloseIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -14,108 +14,39 @@ function CloseIcon() {
   );
 }
 
-// External link icon
-function ExternalIcon({ size = 14 }) {
+// Arrow Icon
+function ArrowUpRightIcon() {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-      <polyline points="15 3 21 3 21 9" />
-      <line x1="10" y1="14" x2="21" y2="3" />
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <line x1="7" y1="17" x2="17" y2="7" />
+      <polyline points="7 7 17 7 17 17" />
     </svg>
   );
 }
 
-// GitHub icon
-function GithubIcon({ size = 16 }) {
+// GitHub Icon
+function GithubIcon() {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
     </svg>
   );
 }
 
-// Figma icon
-function FigmaIcon({ size = 16 }) {
+// Figma Icon
+function FigmaIcon() {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.001h3.117c1.475 0 2.491-1.016 2.491-2.491S17.327 2.02 15.852 2.02h-3.117v4.981zm0 1.98H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.491 4.49-4.491h4.588v8.981zm-4.587-6.001c-1.475 0-2.491 1.016-2.491 2.491S6.673 7.001 8.148 7.001h3.117V2.98H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zm-4.587-6.001c-1.475 0-2.491 1.016-2.491 2.491s1.016 2.49 2.491 2.49h3.117v-4.981H8.148zm4.587.001h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49-4.49-2.014-4.49-4.49v-4.49zm4.588 6.979c1.475 0 2.491-1.016 2.491-2.491s-1.016-2.49-2.491-2.49h-3.117v2.49c0 1.475 1.016 2.491 2.491 2.491h.626z" />
     </svg>
   );
 }
 
-// Project image placeholder
-function ProjectImagePlaceholder({ title }) {
-  const initial = title ? title.charAt(0).toUpperCase() : "P";
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        width: "100%",
-        aspectRatio: "16 / 10",
-        backgroundColor: "var(--color-surface-muted)",
-        borderRadius: "var(--radius-md)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "var(--font-accent)",
-        fontSize: "clamp(2rem, 6vw, 4rem)",
-        color: "var(--color-text-secondary)",
-        letterSpacing: "-0.05em",
-        userSelect: "none",
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      {/* Grid pattern */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(var(--color-border-default) 1px, transparent 1px),
-            linear-gradient(to right, var(--color-border-default) 1px, transparent 1px)
-          `,
-          backgroundSize: "24px 24px",
-        }}
-      />
-      <span style={{ position: "relative", zIndex: 1 }}>{initial}</span>
-    </div>
-  );
-}
-
-// Category chip
-function CategoryChip({ category }) {
-  const shortLabel = category.replace("Frontend/Web Development", "Frontend")
-    .replace("Full-stack Web Application", "Full-stack")
-    .replace("UI/UX Design", "UI/UX");
-
-  return (
-    <span
-      style={{
-        display: "inline-block",
-        fontSize: "11px",
-        fontFamily: "var(--font-accent)",
-        color: "var(--color-text-secondary)",
-        padding: "var(--space-2) var(--space-3)",
-        borderRadius: "var(--radius-sm)",
-        border: "1px solid var(--color-border-default)",
-        letterSpacing: "0.03em",
-        whiteSpace: "nowrap",
-      }}
-    >
-      {shortLabel}
-    </span>
-  );
-}
-
-// =============================================
-// PROJECT MODAL
-// =============================================
+// Project Modal
 function ProjectModal({ project, onClose }) {
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
 
-  // Focus trap + close on Escape
   useEffect(() => {
     const previousFocus = document.activeElement;
     closeButtonRef.current?.focus();
@@ -125,7 +56,6 @@ function ProjectModal({ project, onClose }) {
         onClose();
         return;
       }
-      // Focus trap
       if (e.key === "Tab") {
         const focusable = panelRef.current?.querySelectorAll(
           'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
@@ -161,140 +91,38 @@ function ProjectModal({ project, onClose }) {
   const links =
     typeof project.links === "object" && project.links !== null
       ? project.links
-      : typeof project.links === "string"
-      ? {
-          github: project.links.includes("github.com") ? project.links : null,
-          figma: project.links.includes("figma.com") ? project.links : null,
-          demo:
-            !project.links.includes("github.com") &&
-            !project.links.includes("figma.com")
-              ? project.links
-              : null,
-        }
       : {};
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={modalTitleId}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: "var(--z-modal)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "var(--space-5)",
-        animation: "modal-backdrop-in var(--motion-base) var(--motion-easing) forwards",
-      }}
-    >
-      {/* Overlay */}
-      <div
-        onClick={onClose}
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "var(--color-overlay)",
-          backdropFilter: "blur(4px)",
-        }}
-      />
+    <div role="dialog" aria-modal="true" aria-labelledby={modalTitleId} className="modal-root">
+      <div onClick={onClose} aria-hidden="true" className="modal-overlay" />
 
-      {/* Panel */}
-      <div
-        ref={panelRef}
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "720px",
-          maxHeight: "90dvh",
-          overflowY: "auto",
-          backgroundColor: "var(--color-surface-raised)",
-          borderRadius: "var(--radius-lg)",
-          boxShadow: "var(--shadow-modal)",
-          border: "1px solid var(--color-border-default)",
-          animation: "modal-panel-in var(--motion-base) var(--motion-easing) forwards",
-        }}
-      >
+      <div ref={panelRef} className="modal-panel">
         {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: "var(--space-5)",
-            padding: "var(--space-9)",
-            borderBottom: "1px solid var(--color-border-default)",
-            position: "sticky",
-            top: 0,
-            backgroundColor: "var(--color-surface-raised)",
-            zIndex: 1,
-          }}
-        >
+        <div className="modal-header">
           <div>
-            <CategoryChip category={project.category} />
-            <h2
-              id={modalTitleId}
-              style={{
-                fontSize: "22px",
-                fontWeight: "var(--font-weight-strong)",
-                color: "var(--color-text-primary)",
-                margin: "var(--space-3) 0 0 0",
-                lineHeight: 1.3,
-              }}
-            >
-              {project.title}
-            </h2>
+            <span className="modal-category-chip">{project.category}</span>
+            <h2 id={modalTitleId} className="modal-title">{project.title}</h2>
           </div>
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            aria-label="Close project details"
-            style={{
-              width: "44px",
-              height: "44px",
-              borderRadius: "var(--radius-md)",
-              border: "1.5px solid var(--color-border-strong)",
-              backgroundColor: "transparent",
-              color: "var(--color-text-primary)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              transition: `background-color var(--motion-instant) var(--motion-easing)`,
-            }}
-            className="modal-close-btn"
+            aria-label="Close project modal"
+            className="modal-close-button"
           >
             <CloseIcon />
           </button>
         </div>
 
         {/* Content */}
-        <div style={{ padding: "var(--space-9)" }}>
-          {/* Project image */}
-          {project.image ? (
-            <div
-              style={{
-                width: "100%",
-                borderRadius: "var(--radius-md)",
-                overflow: "hidden",
-                border: "1px solid var(--color-border-default)",
-                marginBottom: "var(--space-9)",
-                backgroundColor: "var(--color-surface-muted)",
-              }}
-            >
+        <div className="modal-content">
+          {/* Image */}
+          {project.image && (
+            <div className="modal-img-wrap">
               <img
                 src={project.image}
                 alt={`Screenshot of ${project.title}`}
                 loading="lazy"
-                style={{
-                  width: "100%",
-                  aspectRatio: "16/10",
-                  objectFit: "cover",
-                  display: "block",
-                }}
                 onError={(e) => {
                   if (!e.currentTarget.src.includes("Project1.jpg")) {
                     e.currentTarget.src = "/images/projects/Project1.jpg";
@@ -302,475 +130,161 @@ function ProjectModal({ project, onClose }) {
                 }}
               />
             </div>
-          ) : (
-            <div style={{ marginBottom: "var(--space-9)" }}>
-              <ProjectImagePlaceholder title={project.title} />
-            </div>
           )}
 
-          {/* Summary */}
-          <section aria-labelledby={`${project.id}-summary`} style={{ marginBottom: "var(--space-9)" }}>
-            <h3
-              id={`${project.id}-summary`}
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-accent)",
-                color: "var(--color-text-secondary)",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                margin: "0 0 var(--space-4) 0",
-              }}
-            >
-              Overview
-            </h3>
-            <p style={{ fontSize: "15px", lineHeight: "24px", color: "var(--color-text-secondary)", margin: 0 }}>
-              {project.summary}
-            </p>
-          </section>
+          {/* Details */}
+          <div className="modal-body-grid">
+            <div>
+              <h3 className="modal-section-heading">Overview</h3>
+              <p className="modal-paragraph">{project.summary}</p>
 
-          {/* Role */}
-          <section aria-labelledby={`${project.id}-role`} style={{ marginBottom: "var(--space-9)" }}>
-            <h3
-              id={`${project.id}-role`}
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-accent)",
-                color: "var(--color-text-secondary)",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                margin: "0 0 var(--space-4) 0",
-              }}
-            >
-              Role & Contribution
-            </h3>
-            <p style={{ fontSize: "14px", fontWeight: "var(--font-weight-strong)", color: "var(--color-text-primary)", margin: "0 0 var(--space-3) 0" }}>
-              {project.role}
-            </p>
-            <p style={{ fontSize: "15px", lineHeight: "24px", color: "var(--color-text-secondary)", margin: 0 }}>
-              {project.contribution}
-            </p>
-          </section>
-
-          {/* Tech */}
-          <section aria-labelledby={`${project.id}-tech`} style={{ marginBottom: "var(--space-9)" }}>
-            <h3
-              id={`${project.id}-tech`}
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-accent)",
-                color: "var(--color-text-secondary)",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                margin: "0 0 var(--space-4) 0",
-              }}
-            >
-              Technologies
-            </h3>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-              {project.tech.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    fontSize: "13px",
-                    fontFamily: "var(--font-accent)",
-                    color: "var(--color-text-primary)",
-                    padding: "var(--space-2) var(--space-4)",
-                    borderRadius: "var(--radius-sm)",
-                    border: "1px solid var(--color-border-strong)",
-                  }}
-                >
-                  {t}
-                </span>
-              ))}
+              <h3 className="modal-section-heading" style={{ marginTop: "24px" }}>
+                Role &amp; Contribution
+              </h3>
+              <p className="modal-role-label">{project.role}</p>
+              <p className="modal-paragraph">{project.contribution}</p>
             </div>
-          </section>
 
-          {/* Links — only render available ones */}
-          {(links.github || links.demo || links.figma) && (
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "var(--space-4)",
-                paddingTop: "var(--space-5)",
-                borderTop: "1px solid var(--color-border-default)",
-              }}
-            >
-              {links.github && (
-                <a
-                  href={links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "var(--space-3)",
-                    padding: "0 var(--space-5)",
-                    height: "40px",
-                    borderRadius: "var(--radius-md)",
-                    border: "1.5px solid var(--color-border-strong)",
-                    color: "var(--color-text-primary)",
-                    fontSize: "14px",
-                    fontWeight: "var(--font-weight-strong)",
-                    textDecoration: "none",
-                    transition: `background-color var(--motion-instant) var(--motion-easing)`,
-                  }}
-                  className="modal-link"
-                >
-                  <GithubIcon />
-                  GitHub repository
-                  <span className="sr-only"> — {project.title} (opens in new tab)</span>
-                </a>
-              )}
-              {links.demo && (
-                <a
-                  href={links.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "var(--space-3)",
-                    padding: "0 var(--space-5)",
-                    height: "40px",
-                    borderRadius: "var(--radius-md)",
-                    backgroundColor: "var(--color-action-primary-bg)",
-                    color: "var(--color-action-primary-fg)",
-                    fontSize: "14px",
-                    fontWeight: "var(--font-weight-strong)",
-                    textDecoration: "none",
-                    transition: `background-color var(--motion-instant) var(--motion-easing)`,
-                  }}
-                  className="btn-primary"
-                >
-                  Live demo
-                  <ExternalIcon />
-                  <span className="sr-only"> — {project.title} (opens in new tab)</span>
-                </a>
-              )}
-              {links.figma && (
-                <a
-                  href={links.figma}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "var(--space-3)",
-                    padding: "0 var(--space-5)",
-                    height: "40px",
-                    borderRadius: "var(--radius-md)",
-                    border: "1.5px solid var(--color-border-strong)",
-                    color: "var(--color-text-primary)",
-                    fontSize: "14px",
-                    fontWeight: "var(--font-weight-strong)",
-                    textDecoration: "none",
-                    transition: `background-color var(--motion-instant) var(--motion-easing)`,
-                  }}
-                  className="modal-link"
-                >
-                  <FigmaIcon />
-                  Figma design
-                  <span className="sr-only"> — {project.title} (opens in new tab)</span>
-                </a>
+            <div className="modal-sidebar">
+              <h3 className="modal-section-heading">Technologies</h3>
+              <div className="modal-tech-chips">
+                {project.tech.map((t) => (
+                  <span key={t} className="tech-chip">
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              {(links.github || links.demo || links.figma) && (
+                <div className="modal-links-section">
+                  <h3 className="modal-section-heading">Project Links</h3>
+                  <div className="modal-links-list">
+                    {links.demo && (
+                      <a href={links.demo} target="_blank" rel="noopener noreferrer" className="btn-primary modal-action-btn">
+                        <span>Live Demo</span>
+                        <ArrowUpRightIcon />
+                      </a>
+                    )}
+                    {links.github && (
+                      <a href={links.github} target="_blank" rel="noopener noreferrer" className="modal-outline-link">
+                        <GithubIcon />
+                        <span>GitHub Repository</span>
+                      </a>
+                    )}
+                    {links.figma && (
+                      <a href={links.figma} target="_blank" rel="noopener noreferrer" className="modal-outline-link">
+                        <FigmaIcon />
+                        <span>Figma Design</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
-          )}
+          </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes modal-backdrop-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes modal-panel-in {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .modal-close-btn:hover { background-color: var(--color-surface-muted) !important; }
-        .modal-link:hover { background-color: var(--color-surface-muted) !important; }
-        .btn-primary:hover { background-color: var(--color-action-primary-bg-hover) !important; }
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0,0,0,0);
-          white-space: nowrap;
-          border: 0;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          @keyframes modal-backdrop-in { from {} to {} }
-          @keyframes modal-panel-in { from {} to {} }
-        }
-      `}</style>
     </div>
   );
 }
 
-// =============================================
-// PROJECT CARD
-// =============================================
-function ProjectCard({ project, onOpen, index }) {
+// Project Card
+function ProjectCard({ project, onOpen }) {
   const ref = useScrollReveal();
-
-  const techToShow = project.tech.slice(0, 4);
-  const remainingCount = project.tech.length - 4;
+  const techToShow = project.tech.slice(0, 3);
+  const remainingCount = project.tech.length - techToShow.length;
 
   return (
-    <article
-      ref={ref}
-      className="reveal project-card"
-      style={{
-        borderRadius: "var(--radius-lg)",
-        border: "1px solid var(--color-border-default)",
-        backgroundColor: "var(--color-surface-raised)",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        transition: `border-color var(--motion-instant) var(--motion-easing), background-color var(--motion-instant) var(--motion-easing)`,
-        position: "relative",
-        animationDelay: `${index * 100}ms`,
-      }}
-    >
-      {/* Image */}
-      <div style={{ flexShrink: 0, padding: "var(--space-5) var(--space-5) 0" }}>
+    <article ref={ref} className="reveal project-card-item">
+      {/* Image Preview */}
+      <div className="project-preview-wrap" onClick={() => onOpen(project)}>
         {project.image ? (
-          <div
-            style={{
-              width: "100%",
-              borderRadius: "var(--radius-md)",
-              overflow: "hidden",
-              border: "1px solid var(--color-border-default)",
-              backgroundColor: "var(--color-surface-muted)",
+          <img
+            src={project.image}
+            alt={`Screenshot of ${project.title}`}
+            loading="lazy"
+            className="project-preview-img"
+            onError={(e) => {
+              if (!e.currentTarget.src.includes("Project1.jpg")) {
+                e.currentTarget.src = "/images/projects/Project1.jpg";
+              }
             }}
-          >
-            <img
-              src={project.image}
-              alt={`Screenshot of ${project.title}`}
-              loading="lazy"
-              style={{
-                width: "100%",
-                aspectRatio: "16/10",
-                objectFit: "cover",
-                display: "block",
-                transition: "transform var(--motion-base) var(--motion-easing)",
-              }}
-              className="project-card-img"
-              onError={(e) => {
-                if (!e.currentTarget.src.includes("Project1.jpg")) {
-                  e.currentTarget.src = "/images/projects/Project1.jpg";
-                }
-              }}
-            />
-          </div>
+          />
         ) : (
-          <ProjectImagePlaceholder title={project.title} />
+          <div className="project-placeholder-box">
+            <span>{project.title.charAt(0)}</span>
+          </div>
         )}
       </div>
 
-      {/* Content */}
-      <div
-        style={{
-          padding: "var(--space-5)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "var(--space-4)",
-          flex: 1,
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "18px",
-            fontWeight: "var(--font-weight-strong)",
-            color: "var(--color-text-primary)",
-            margin: 0,
-            lineHeight: 1.3,
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
-        >
+      {/* Card Info */}
+      <div className="project-info-wrap">
+        <div className="project-header-row">
+          <span className="project-chip">{project.category}</span>
+        </div>
+
+        <h3 className="project-name" onClick={() => onOpen(project)}>
           {project.title}
         </h3>
 
-        <p
-          style={{
-            fontSize: "14px",
-            lineHeight: "20px",
-            color: "var(--color-text-secondary)",
-            margin: 0,
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            flex: 1,
-          }}
-        >
-          {project.summary}
-        </p>
+        <p className="project-summary-text">{project.summary}</p>
 
-        {/* Tech chips */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)", marginTop: "auto" }}>
+        {/* Tech Chips */}
+        <div className="project-chips-row">
           {techToShow.map((t) => (
-            <span
-              key={t}
-              style={{
-                fontSize: "11px",
-                fontFamily: "var(--font-accent)",
-                color: "var(--color-text-secondary)",
-                padding: "var(--space-1) var(--space-3)",
-                borderRadius: "var(--radius-sm)",
-                border: "1px solid var(--color-border-default)",
-              }}
-            >
+            <span key={t} className="project-chip-mini">
               {t}
             </span>
           ))}
           {remainingCount > 0 && (
-            <span
-              style={{
-                fontSize: "11px",
-                fontFamily: "var(--font-accent)",
-                color: "var(--color-text-secondary)",
-                padding: "var(--space-1) var(--space-3)",
-                borderRadius: "var(--radius-sm)",
-                border: "1px solid var(--color-border-default)",
-              }}
-            >
-              +{remainingCount}
-            </span>
+            <span className="project-chip-mini">+{remainingCount}</span>
           )}
         </div>
 
-        {/* View details button */}
+        {/* View Details Button */}
         <button
+          type="button"
           onClick={() => onOpen(project)}
-          id={`view-details-${project.id}`}
+          className="project-details-btn"
           aria-label={`View details — ${project.title}`}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "40px",
-            borderRadius: "var(--radius-md)",
-            border: "1.5px solid var(--color-border-strong)",
-            backgroundColor: "transparent",
-            color: "var(--color-text-primary)",
-            fontSize: "14px",
-            fontWeight: "var(--font-weight-strong)",
-            cursor: "pointer",
-            transition: `background-color var(--motion-instant) var(--motion-easing)`,
-            marginTop: "var(--space-3)",
-          }}
-          className="view-details-btn"
         >
-          View Details
+          <span>View Details</span>
+          <ArrowUpRightIcon />
         </button>
       </div>
-
-      {/* Pseudo clickable area for whole card */}
-      <style>{`
-        .project-card:hover {
-          border-color: var(--color-accent-start) !important;
-          box-shadow: var(--shadow-card) !important;
-        }
-        .project-card:hover .project-card-img {
-          transform: scale(1.04);
-        }
-        .view-details-btn:hover {
-          background-color: var(--color-surface-muted) !important;
-          border-color: var(--color-accent-start) !important;
-        }
-        .view-details-btn:active {
-          background-color: var(--color-surface-muted) !important;
-          border-color: var(--color-accent-end) !important;
-        }
-      `}</style>
     </article>
   );
 }
 
-// =============================================
-// PROJECTS SECTION
-// =============================================
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const handleOpen = useCallback((project) => {
-    setSelectedProject(project);
+  const handleOpen = useCallback((p) => {
+    setSelectedProject(p);
   }, []);
 
   const handleClose = useCallback(() => {
     setSelectedProject(null);
   }, []);
 
-  // Empty state
-  if (!projects || projects.length === 0) {
-    return (
-      <section id="projects" aria-labelledby="projects-heading" style={{ paddingBlock: "var(--space-8)" }}>
-        <div className="container">
-          <SectionHeader
-            number="06"
-            eyebrow="Selected Projects"
-            heading="Work That Speaks for Itself"
-            headingId="projects-heading"
-          />
-          <p style={{ color: "var(--color-text-secondary)", fontSize: "16px" }}>
-            Projects are being added.{" "}
-            <a
-              href="https://github.com/gunturlistyo"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "var(--color-text-primary)", textDecoration: "underline", textUnderlineOffset: "3px" }}
-            >
-              Browse my work on GitHub in the meantime
-              <span className="sr-only"> (opens in new tab)</span>
-            </a>
-            .
-          </p>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <>
-      <section
-        id="projects"
-        aria-labelledby="projects-heading"
-        style={{ paddingBlock: "var(--space-8)" }}
-      >
+      <section id="projects" aria-labelledby="projects-heading" className="portfolio-section portfolio-section-alt">
         <div className="container">
           <SectionHeader
-            number="06"
+            number="05"
             eyebrow="Selected Projects"
             heading="Work That Speaks for Itself"
-            description="A selection of projects that demonstrate my approach to solving real problems with thoughtful design and clean implementation."
+            description="A selection of projects demonstrating clean execution, thoughtful interaction, and modern front-end craft."
             headingId="projects-heading"
           />
 
-          {/* Grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "var(--space-5)",
-            }}
-            className="projects-grid"
-          >
-            {projects.map((project, i) => (
+          <div className="projects-grid">
+            {projects.map((project) => (
               <ProjectCard
                 key={project.id}
                 project={project}
                 onOpen={handleOpen}
-                index={i}
               />
             ))}
           </div>
@@ -783,26 +297,348 @@ export default function Projects() {
       )}
 
       <style>{`
+        .projects-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+
+        @media (min-width: 640px) {
+          .projects-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
         @media (min-width: 1024px) {
           .projects-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
+            grid-template-columns: repeat(3, 1fr);
           }
         }
-        @media (min-width: 768px) and (max-width: 1023px) {
-          .projects-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
+
+        .project-card-item {
+          display: flex;
+          flex-direction: column;
+          background-color: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
           overflow: hidden;
-          clip: rect(0,0,0,0);
-          white-space: nowrap;
-          border: 0;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+          transition: border-color var(--motion-instant) var(--motion-easing),
+                      transform var(--motion-instant) var(--motion-easing),
+                      box-shadow var(--motion-instant) var(--motion-easing);
+        }
+
+        .project-card-item:hover {
+          border-color: var(--primary);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 30px rgba(0, 153, 255, 0.08);
+        }
+
+        .project-preview-wrap {
+          overflow: hidden;
+          aspect-ratio: 16 / 10;
+          background-color: var(--surface-muted);
+          cursor: pointer;
+        }
+
+        .project-preview-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform var(--motion-slow) var(--motion-easing);
+        }
+
+        .project-card-item:hover .project-preview-img {
+          transform: scale(1.04);
+        }
+
+        .project-placeholder-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          font-family: var(--font-display);
+          font-size: 3rem;
+          color: var(--muted-foreground);
+        }
+
+        .project-info-wrap {
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          flex: 1;
+        }
+
+        .project-chip {
+          display: inline-block;
+          font-family: var(--font-accent);
+          font-size: 11px;
+          font-weight: var(--font-weight-strong);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--muted-foreground);
+        }
+
+        .project-name {
+          font-family: var(--font-display);
+          font-size: 21px;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          color: var(--foreground);
+          margin: 0;
+          cursor: pointer;
+          line-height: 1.25;
+          transition: color var(--motion-instant) var(--motion-easing);
+        }
+
+        .project-name:hover {
+          color: var(--primary);
+        }
+
+        .project-summary-text {
+          font-size: 14px;
+          line-height: 22px;
+          color: var(--muted-foreground);
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .project-chips-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: auto;
+          padding-top: 8px;
+        }
+
+        .project-chip-mini {
+          font-family: var(--font-accent);
+          font-size: 11px;
+          padding: 3px 9px;
+          border-radius: var(--radius-sm);
+          background-color: var(--surface-muted);
+          border: 1px solid var(--border);
+          color: var(--muted-foreground);
+        }
+
+        .project-details-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding: 10px 14px;
+          margin-top: 8px;
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border);
+          background-color: var(--surface-muted);
+          color: var(--foreground);
+          font-size: 13px;
+          font-weight: var(--font-weight-strong);
+          cursor: pointer;
+          transition: border-color var(--motion-instant) var(--motion-easing),
+                      background-color var(--motion-instant) var(--motion-easing),
+                      color var(--motion-instant) var(--motion-easing);
+        }
+
+        .project-details-btn:hover {
+          border-color: var(--primary);
+          background-color: var(--surface);
+          color: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal-root {
+          position: fixed;
+          inset: 0;
+          z-index: var(--z-modal);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+
+        .modal-overlay {
+          position: absolute;
+          inset: 0;
+          background-color: rgba(11, 27, 43, 0.6);
+          backdrop-filter: blur(8px);
+        }
+
+        .modal-panel {
+          position: relative;
+          width: 100%;
+          max-width: 840px;
+          max-height: 90vh;
+          overflow-y: auto;
+          background-color: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+          position: sticky;
+          top: 0;
+          z-index: 2;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          padding: 24px 28px;
+          border-bottom: 1px solid var(--border);
+          background-color: var(--surface);
+        }
+
+        .modal-category-chip {
+          font-family: var(--font-accent);
+          font-size: 12px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--primary);
+          font-weight: var(--font-weight-strong);
+        }
+
+        .modal-title {
+          font-family: var(--font-display);
+          font-size: 26px;
+          font-weight: 400;
+          color: var(--foreground);
+          margin: 4px 0 0 0;
+        }
+
+        .modal-close-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 38px;
+          height: 38px;
+          border-radius: var(--radius-full);
+          border: 1px solid var(--border);
+          background-color: var(--surface-muted);
+          color: var(--foreground);
+          cursor: pointer;
+          transition: all var(--motion-instant) var(--motion-easing);
+        }
+
+        .modal-close-button:hover {
+          border-color: var(--primary);
+          color: var(--primary);
+        }
+
+        .modal-content {
+          padding: 28px;
+        }
+
+        .modal-img-wrap {
+          border-radius: var(--radius-md);
+          overflow: hidden;
+          border: 1px solid var(--border);
+          margin-bottom: 24px;
+        }
+
+        .modal-img-wrap img {
+          width: 100%;
+          aspect-ratio: 16 / 10;
+          object-fit: cover;
+          display: block;
+        }
+
+        .modal-body-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+
+        @media (min-width: 768px) {
+          .modal-body-grid {
+            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+          }
+        }
+
+        .modal-section-heading {
+          font-family: var(--font-accent);
+          font-size: 12px;
+          font-weight: var(--font-weight-strong);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--muted-foreground);
+          margin: 0 0 10px 0;
+        }
+
+        .modal-paragraph {
+          font-size: 15px;
+          line-height: 24px;
+          color: var(--muted-foreground);
+          margin: 0;
+        }
+
+        .modal-role-label {
+          font-size: 15px;
+          font-weight: var(--font-weight-strong);
+          color: var(--foreground);
+          margin: 0 0 6px 0;
+        }
+
+        .modal-tech-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 24px;
+        }
+
+        .tech-chip {
+          font-family: var(--font-accent);
+          font-size: 12px;
+          padding: 5px 12px;
+          border-radius: var(--radius-sm);
+          background-color: var(--surface-muted);
+          border: 1px solid var(--border);
+          color: var(--foreground);
+        }
+
+        .modal-links-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .modal-action-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          height: 42px;
+          padding: 0 20px;
+          border-radius: var(--radius-md);
+          font-size: 14px;
+          font-weight: var(--font-weight-strong);
+          text-decoration: none;
+        }
+
+        .modal-outline-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          height: 42px;
+          padding: 0 16px;
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border);
+          background-color: var(--surface-muted);
+          color: var(--foreground);
+          font-size: 14px;
+          font-weight: var(--font-weight-strong);
+          text-decoration: none;
+          transition: all var(--motion-instant) var(--motion-easing);
+        }
+
+        .modal-outline-link:hover {
+          border-color: var(--primary);
+          color: var(--primary);
         }
       `}</style>
     </>

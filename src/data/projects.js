@@ -82,9 +82,9 @@ export const projects = [
     tech: ["Figma", "React JS", "Python", "Machine Learning", "PostgreSQL"],
     image: "/images/projects/Project5.png",
     links: {
-      github: null,
+      github: "https://github.com/AnandaMadani29/Deepfake-AI-Checker",
       demo: "https://factit.online/",
-      figma: null,
+      figma: "https://www.figma.com/design/zb4LrQCCDJ7EP77kbMuHSW/Website-Skripsi?node-id=0-1&t=tKf0Y0PrJfSKSjsO-1",
     },
   },
 ];
