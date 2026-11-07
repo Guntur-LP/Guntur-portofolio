@@ -33,6 +33,29 @@ function ArrowIcon() {
   );
 }
 
+// CV / Resume Icon
+function CvIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>
+  );
+}
+
 export default function Hero() {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isReducedMotion, setIsReducedMotion] = useState(
@@ -546,19 +569,22 @@ export default function Hero() {
             }}
           >
             <a
+              href={profile.links.cv || "/cv.pdf"}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="hero-cta-cv"
+              className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
+            >
+              <CvIcon />
+              View CV
+            </a>
+            <a
               href="#projects"
               id="hero-cta-projects"
               className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0"
             >
               View Projects
               <ArrowIcon />
-            </a>
-            <a
-              href="#contact"
-              id="hero-cta-contact"
-              className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
-            >
-              Get in Touch
             </a>
           </div>
         </div>
@@ -597,19 +623,22 @@ export default function Hero() {
           }}
         >
           <a
+            href={profile.links.cv || "/cv.pdf"}
+            target="_blank"
+            rel="noopener noreferrer"
+            id="hero-cta-cv-mob"
+            className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
+          >
+            <CvIcon />
+            View CV
+          </a>
+          <a
             href="#projects"
             id="hero-cta-projects-mob"
             className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0"
           >
             View Projects
             <ArrowIcon />
-          </a>
-          <a
-            href="#contact"
-            id="hero-cta-contact-mob"
-            className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
-          >
-            Get in Touch
           </a>
         </div>
       </div>

@@ -15,7 +15,7 @@ export const profile = {
     github: "https://github.com/gunturlistyo",
     linkedin: "https://linkedin.com/in/gunturlistyo",
     email: "gunturlistyo@gmail.com",
-    cv: null, // Set to "/cv.pdf" when file is ready
+    cv: "../CV/CV ATS_Guntur_Listyo_Prabowo.pdf",
   },
 
   skills: {
