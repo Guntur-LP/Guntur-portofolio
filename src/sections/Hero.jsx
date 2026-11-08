@@ -590,57 +590,38 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Layer 1C: Mobile Bottom Copy & CTAs */}
-      <div className="md:hidden absolute bottom-24 left-(--gutter) right-(--gutter) z-25 flex flex-col items-start gap-4">
-        <p
-          className="text-[1rem] leading-[1.6] text-(--color-text-secondary) transition-all will-change-transform max-w-sm"
-          style={{
-            opacity: isRevealed || isReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || isReducedMotion
-                ? "translateY(0)"
-                : "translateY(16px)",
-            transitionDuration: isReducedMotion ? "0ms" : "520ms",
-            transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-            transitionDelay: isReducedMotion ? "0ms" : "320ms",
-          }}
+      {/* Layer 1C: Mobile CTAs (Subheadline removed for clean, focused mobile viewport) */}
+      <div
+        className="md:hidden absolute bottom-24 left-(--gutter) right-(--gutter) z-25 flex flex-wrap items-center gap-3 transition-all will-change-transform"
+        style={{
+          opacity: isRevealed || isReducedMotion ? 1 : 0,
+          transform:
+            isRevealed || isReducedMotion
+              ? "translateY(0)"
+              : "translateY(16px)",
+          transitionDuration: isReducedMotion ? "0ms" : "520ms",
+          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+          transitionDelay: isReducedMotion ? "0ms" : "360ms",
+        }}
+      >
+        <a
+          href="#projects"
+          id="hero-cta-projects-mob"
+          className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0"
         >
-          {profile.subheadline ||
-            "Building thoughtful digital experiences. A Frontend Developer and UI/UX Designer focused on creating intuitive interfaces and polished web applications."}
-        </p>
-
-        <div
-          className="flex flex-wrap items-center gap-3 pt-1 transition-all will-change-transform"
-          style={{
-            opacity: isRevealed || isReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || isReducedMotion
-                ? "translateY(0)"
-                : "translateY(16px)",
-            transitionDuration: isReducedMotion ? "0ms" : "520ms",
-            transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-            transitionDelay: isReducedMotion ? "0ms" : "440ms",
-          }}
+          View Projects
+          <ArrowIcon />
+        </a>
+        <a
+          href={profile.links.cv || "/cv.pdf"}
+          target="_blank"
+          rel="noopener noreferrer"
+          id="hero-cta-cv-mob"
+          className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
         >
-          <a
-            href={profile.links.cv || "/cv.pdf"}
-            target="_blank"
-            rel="noopener noreferrer"
-            id="hero-cta-cv-mob"
-            className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-(--color-border-default) bg-(--color-surface-raised) text-(--color-text-primary) text-sm font-semibold transition-all hover:-translate-y-0.5"
-          >
-            <CvIcon />
-            View CV
-          </a>
-          <a
-            href="#projects"
-            id="hero-cta-projects-mob"
-            className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0"
-          >
-            View Projects
-            <ArrowIcon />
-          </a>
-        </div>
+          <CvIcon />
+          View CV
+        </a>
       </div>
 
       {/* Layer 2: Oversized Hero Headline (Positioned behind portrait) */}
@@ -744,10 +725,10 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* Layer 5: Scroll Cue (Positioned in lower-left on mobile, lower-right on desktop) */}
+      {/* Layer 5: Editorial Kinetic Scroll Cue (Lower-left on mobile, lower-right on desktop) */}
       <a
         href="#about"
-        className="absolute bottom-8 left-(--gutter) md:left-auto md:right-(--gutter) z-25 flex items-center md:flex-row-reverse gap-3 transition-opacity will-change-transform group cursor-pointer"
+        className="absolute bottom-8 left-(--gutter) md:left-auto md:right-(--gutter) z-25 flex items-center md:flex-row-reverse gap-3.5 transition-opacity will-change-transform group cursor-pointer"
         style={{
           opacity: isRevealed || isReducedMotion ? 1 : 0,
           transitionDuration: isReducedMotion ? "0ms" : "600ms",
@@ -756,8 +737,28 @@ export default function Hero() {
         }}
         aria-label="Scroll down to About section"
       >
-        <div className="w-[1.5px] h-10 bg-(--primary) transition-transform duration-300 group-hover:scale-y-125 origin-top" />
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-(--color-text-secondary) group-hover:text-(--color-text-primary) transition-colors">
+        <div className="flex flex-col items-center gap-1.5">
+          <div className="scroll-cue-track" aria-hidden="true">
+            <div className="scroll-cue-runner" />
+          </div>
+          <svg
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+            aria-hidden="true"
+            className="text-(--primary) opacity-50 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0.5"
+          >
+            <path
+              d="M1 1L5 5L9 1"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-[0.22em] text-(--color-text-secondary) group-hover:text-(--color-text-primary) transition-all duration-300 group-hover:tracking-[0.26em] select-none">
           Scroll to explore
         </span>
       </a>
