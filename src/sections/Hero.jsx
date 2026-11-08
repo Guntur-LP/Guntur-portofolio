@@ -6,7 +6,7 @@ const LINE_1 = "GUNTUR".split("");
 const LINE_2 = "LISTYO".split("");
 
 // Hero assets
-const PORTRAIT_WEBP = "../images/Hero/New.webp";
+const PORTRAIT_WEBP = "../images/Hero/Hero2.webp";
 
 // Padding around portrait container so dust particles can drift freely into the Hero space
 const PAD_LEFT = 70;
